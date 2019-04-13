@@ -190,5 +190,15 @@ bool GetLengthPrefixedSlice(Slice* input, Slice* result) {
     return false;
   }
 }
+////////////////////meggie
+const char* GetKVLength(const char* kvitem, uint32_t* key_length, size_t* kv_length){
+    uint32_t value_length;
+    const char* key_ptr = GetVarint32Ptr(kvitem, kvitem + 5, key_length);
+    const char* value_ptr = GetVarint32Ptr(key_ptr + *key_length, key_ptr + *key_length+5, &value_length);
+    *kv_length = *key_length + VarintLength(*key_length) 
+        + value_length + VarintLength(value_length);
+    return key_ptr;
+}
+////////////////////meggie
 
 }  // namespace leveldb

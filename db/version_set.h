@@ -222,6 +222,9 @@ class VersionSet {
   // Return the log file number for the log file that is currently
   // being compacted, or zero if there is no such log file.
   uint64_t PrevLogNumber() const { return prev_log_number_; }
+  /////////////////meggie
+  uint64_t MapNumber() const {return map_number_;}
+  /////////////////meggie
 
   // Pick level and inputs for a new compaction.
   // Returns nullptr if there is no compaction to be done.
@@ -303,6 +306,9 @@ class VersionSet {
   uint64_t last_sequence_;
   uint64_t log_number_;
   uint64_t prev_log_number_;  // 0 or backing store for memtable being compacted
+  /////////////////meggie 
+  uint64_t map_number_;
+  /////////////////meggie
 
   // Opened lazily
   WritableFile* descriptor_file_;

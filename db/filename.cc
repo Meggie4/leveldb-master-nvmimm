@@ -34,6 +34,12 @@ std::string TableFileName(const std::string& dbname, uint64_t number) {
   return MakeFileName(dbname, number, "ldb");
 }
 
+///////////////////////meggie
+std::string MapFileName(const std::string& dbname, uint64_t number) {
+  assert(number > 0);
+  return MakeFileName(dbname, number, "map");
+}
+///////////////////////meggie
 std::string SSTTableFileName(const std::string& dbname, uint64_t number) {
   assert(number > 0);
   return MakeFileName(dbname, number, "sst");
@@ -115,6 +121,16 @@ bool ParseFileName(const std::string& filename,
       *type = kTableFile;
     } else if (suffix == Slice(".dbtmp")) {
       *type = kTempFile;
+    //////////////////meggie
+    } else if(suffix == Slice(".map")){
+      *type = kMapFile;
+    } else if(suffix == Slice(".idx")){
+      *type = kIdxFile;
+    } else if(suffix == Slice(".ckg")){
+      *type = kCkgFile;
+    } else if(suffix == Slice(".met")){
+      *type = kMetFile;
+    //////////////meggie
     } else {
       return false;
     }

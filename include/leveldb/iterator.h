@@ -62,6 +62,9 @@ class LEVELDB_EXPORT Iterator {
   // the iterator.
   // REQUIRES: Valid()
   virtual Slice key() const = 0;
+  ///////////////meggie
+  virtual char* GetNodeKey(){return 0;}
+  ///////////////meggie
 
   // Return the value for the current entry.  The underlying storage for
   // the returned slice is valid only until the next modification of

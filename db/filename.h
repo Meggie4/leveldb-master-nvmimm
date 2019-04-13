@@ -24,7 +24,13 @@ enum FileType {
   kDescriptorFile,
   kCurrentFile,
   kTempFile,
-  kInfoLogFile  // Either the current one, or an old one
+  kInfoLogFile,  // Either the current one, or an old one
+  //////////////////meggie
+  kMapFile,
+  kIdxFile,
+  kCkgFile,
+  kMetFile
+  //////////////////meggie
 };
 
 // Return the name of the log file with the specified number
@@ -32,6 +38,9 @@ enum FileType {
 // "dbname".
 std::string LogFileName(const std::string& dbname, uint64_t number);
 
+///////////////////////meggie
+std::string MapFileName(const std::string& name, uint64_t number);
+///////////////////////meggie
 // Return the name of the sstable with the specified number
 // in the db named by "dbname".  The result will be prefixed with
 // "dbname".

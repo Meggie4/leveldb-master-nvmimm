@@ -54,6 +54,9 @@ void EncodeFixed64(char* dst, uint64_t value);
 char* EncodeVarint32(char* dst, uint32_t value);
 char* EncodeVarint64(char* dst, uint64_t value);
 
+////////////////////meggie
+const char* GetKVLength(const char* kvitem, uint32_t* key_length, size_t* kv_length);
+////////////////////meggie
 // Lower-level versions of Get... that read directly from a character buffer
 // without any bounds checking.
 

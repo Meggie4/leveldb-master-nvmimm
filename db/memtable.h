@@ -80,6 +80,9 @@ public:
 	void Add(SequenceNumber seq, ValueType type,
 			const Slice& key,
 			const Slice& value);
+	////////////////meggie
+    void Add(const char* kvitem);
+	////////////////meggie
 
 	//NoveLSM:TODO: To purge
 	//void AddSpecial(const Slice& key, const Slice& value, char *keybuf);

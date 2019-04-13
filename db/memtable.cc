@@ -246,6 +246,35 @@ void MemTable::Add(SequenceNumber s, ValueType type,
     this->IncrKeys();
 }
 
+//////////////meggie
+void MemTable::Add(const char* kvitem){
+    size_t kvlength;
+    uint32_t key_length;
+    GetKVLength(kvitem, &key_length, &kvlength);
+    char* buf = NULL;
+
+    if(arena_->nvmarena_) {
+        ArenaNVM *nvm_arena = (ArenaNVM *)arena_;
+        buf = nvm_arena->Allocate(kvlength);
+    }else {
+        buf = arena_->Allocate(kvlength);
+    }
+    if(!buf){
+        perror("Memory allocation failed");
+        exit(-1);
+    }
+    if (this->isNVMMemtable == true) {
+        memcpy_persist(buf, kvitem, kvlength);
+    }else{
+        memcpy(buf, kvitem, kvlength);
+    }
+#ifdef ENABLE_RECOVERY
+    table_.Insert(buf);
+#else
+    table_.Insert(buf);
+#endif
+}
+//////////////meggie
 
 bool MemTable::Get(const LookupKey& key, std::string* value, Status* s) {
 

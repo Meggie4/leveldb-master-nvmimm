@@ -82,6 +82,9 @@ static bool FLAGS_histogram = false;
 // Number of bytes to buffer in memtable before compacting
 // (initialized to default value by "main")
 static int FLAGS_write_buffer_size = 0;
+/////////////meggie
+static int FLAGS_nvm_buffer_size = 0;
+/////////////meggie
 
 // Number of bytes written to each file.
 // (initialized to default value by "main")
@@ -112,6 +115,9 @@ static bool FLAGS_reuse_logs = false;
 
 // Use the db with the following name.
 static const char* FLAGS_db = nullptr;
+///////////////meggie
+static const char* FLAGS_nvmdb = nullptr;
+///////////////meggie
 
 namespace leveldb {
 
@@ -419,6 +425,15 @@ class Benchmark {
         g_env->DeleteFile(std::string(FLAGS_db) + "/" + files[i]);
       }
     }
+    /////////////meggie
+    std::vector<std::string> nvmfiles;
+    g_env->GetChildren(FLAGS_nvmdb, &nvmfiles);
+    for (size_t i = 0; i < nvmfiles.size(); i++) {
+      if (Slice(nvmfiles[i]).starts_with("heap-")) {
+        g_env->DeleteFile(std::string(FLAGS_nvmdb) + "/" + nvmfiles[i]);
+      }
+    }
+    ///////////////meggie
     if (!FLAGS_use_existing_db) {
       DestroyDB(FLAGS_db, Options());
     }
@@ -709,6 +724,9 @@ class Benchmark {
     options.create_if_missing = !FLAGS_use_existing_db;
     options.block_cache = cache_;
     options.write_buffer_size = FLAGS_write_buffer_size;
+    /////////////meggie
+    options.nvm_buffer_size = FLAGS_nvm_buffer_size;
+    /////////////meggie
     options.max_file_size = FLAGS_max_file_size;
     options.block_size = FLAGS_block_size;
     options.max_open_files = FLAGS_open_files;
@@ -951,10 +969,16 @@ class Benchmark {
 
 int main(int argc, char** argv) {
   FLAGS_write_buffer_size = leveldb::Options().write_buffer_size;
+  //////////////meggie
+  FLAGS_nvm_buffer_size = leveldb::Options().nvm_buffer_size;
+  //////////////meggie
   FLAGS_max_file_size = leveldb::Options().max_file_size;
   FLAGS_block_size = leveldb::Options().block_size;
   FLAGS_open_files = leveldb::Options().max_open_files;
   std::string default_db_path;
+  /////////////meggie
+  std::string nvm_db_path;
+  /////////////meggie
 
   for (int i = 1; i < argc; i++) {
     double d;
@@ -983,6 +1007,10 @@ int main(int argc, char** argv) {
       FLAGS_value_size = n;
     } else if (sscanf(argv[i], "--write_buffer_size=%d%c", &n, &junk) == 1) {
       FLAGS_write_buffer_size = n;
+    /////////////////meggie
+    } else if (sscanf(argv[i], "--nvm_buffer_size=%d%c", &n, &junk) == 1) {
+      FLAGS_nvm_buffer_size = n;
+    /////////////////meggie
     } else if (sscanf(argv[i], "--max_file_size=%d%c", &n, &junk) == 1) {
       FLAGS_max_file_size = n;
     } else if (sscanf(argv[i], "--block_size=%d%c", &n, &junk) == 1) {
@@ -1010,6 +1038,13 @@ int main(int argc, char** argv) {
       FLAGS_db = default_db_path.c_str();
   }
 
+  /////////////meggie
+  if (FLAGS_nvmdb == nullptr) {
+      leveldb::g_env->GetMEMDirectory(&nvm_db_path);
+      nvm_db_path += "/dbbench";
+      FLAGS_nvmdb = nvm_db_path.c_str();
+  }
+  /////////////meggie
   leveldb::Benchmark benchmark;
   benchmark.Run();
   return 0;

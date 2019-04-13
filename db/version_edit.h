@@ -44,6 +44,12 @@ class VersionEdit {
     has_prev_log_number_ = true;
     prev_log_number_ = num;
   }
+  ////////////meggie
+  void SetMapNumber(uint64_t num){
+      has_map_number_ = true;
+      map_number_ = num; 
+  }
+  ////////////meggie
   void SetNextFile(uint64_t num) {
     has_next_file_number_ = true;
     next_file_number_ = num;
@@ -96,6 +102,10 @@ class VersionEdit {
   bool has_prev_log_number_;
   bool has_next_file_number_;
   bool has_last_sequence_;
+  /////////////meggie
+  bool has_map_number_;
+  uint64_t map_number_;
+  /////////////meggie
 
   std::vector< std::pair<int, InternalKey> > compact_pointers_;
   DeletedFileSet deleted_files_;

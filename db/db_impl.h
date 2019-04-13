@@ -127,6 +127,13 @@ class DBImpl : public DB {
   const bool owns_info_log_;
   const bool owns_cache_;
   const std::string dbname_;
+  ////////////////meggie
+  const std::string dbname_nvm_;
+  size_t nvmbuff_;
+  uint64_t mapfile_number_;
+  MemTable* CreateNVMImmutable();
+  void MovetoNVMImmutable();
+  ////////////////meggie
 
   // table_cache_ provides its own synchronization
   TableCache* const table_cache_;

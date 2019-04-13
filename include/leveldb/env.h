@@ -156,6 +156,9 @@ class LEVELDB_EXPORT Env {
   // between runs of the same process, but subsequent calls will return the
   // same directory.
   virtual Status GetTestDirectory(std::string* path) = 0;
+  ///////////////meggie
+  virtual Status GetMEMDirectory(std::string* path) = 0;
+  ///////////////meggie
 
   // Create and return a log file for storing informational messages.
   virtual Status NewLogger(const std::string& fname, Logger** result) = 0;
@@ -340,6 +343,11 @@ class LEVELDB_EXPORT EnvWrapper : public Env {
   Status GetTestDirectory(std::string* path) override {
     return target_->GetTestDirectory(path);
   }
+  /////////////meggie
+  Status GetMEMDirectory(std::string* path) override {
+    return target_->GetMEMDirectory(path);
+  }
+  /////////////meggie
   Status NewLogger(const std::string& fname, Logger** result) override {
     return target_->NewLogger(fname, result);
   }
