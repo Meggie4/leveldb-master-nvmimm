@@ -245,7 +245,17 @@ void DBImpl::DeleteObsoleteFiles() {
   versions_->AddLiveFiles(&live);
 
   std::vector<std::string> filenames;
+  //////////meggie
+  std::vector<std::string> filenames_nvm;
+  //////////meggie
   env_->GetChildren(dbname_, &filenames);  // Ignoring errors on purpose
+  //////////meggie
+  if(dbname_ != dbname_nvm_){
+      env_->GetChildren(dbname_nvm_, &filenames_nvm);
+      filenames.insert(filenames.end(), 
+              filenames_nvm.begin(), filenames_nvm.end());
+  }
+  //////////meggie
   uint64_t number;
   FileType type;
   for (size_t i = 0; i < filenames.size(); i++) {
@@ -288,7 +298,13 @@ void DBImpl::DeleteObsoleteFiles() {
         Log(options_.info_log, "Delete type=%d #%lld\n",
             static_cast<int>(type),
             static_cast<unsigned long long>(number));
-        env_->DeleteFile(dbname_ + "/" + filenames[i]);
+        /////////////////meggie
+        if(find(filenames_nvm.begin(), filenames_nvm.end(), filenames[i]) != filenames_nvm.end()){
+            env_->DeleteFile(dbname_nvm_ + "/" + filenames[i]);
+        }
+        else  
+        /////////////////meggie
+            env_->DeleteFile(dbname_ + "/" + filenames[i]);
       }
     }
   }
@@ -585,8 +601,12 @@ void DBImpl::CompactMemTable() {
   if (s.ok()) {
     // Commit to the new state
     imm_->Unref();
+    /////////////meggie
+    //imm_ = CreateNVMImmutable();
     imm_ = nullptr;
     has_imm_.Release_Store(nullptr);
+    //has_imm_.Release_Store(imm_);
+    /////////////meggie
     DeleteObsoleteFiles();
   } else {
     RecordBackgroundError(s);
@@ -1378,13 +1398,13 @@ MemTable* DBImpl::CreateNVMImmutable(){
 void DBImpl::MovetoNVMImmutable(){
     if(imm_ == nullptr){
         imm_ = CreateNVMImmutable();
+        assert(imm_ != nullptr);
     }
     Iterator* iter = mem_->NewIterator();
     iter->SeekToFirst();
     for (; iter->Valid(); iter->Next()) {
         imm_->Add(iter->GetNodeKey());
     }
-    
     /*Iterator* iter1 = immu->NewIterator();
     iter->SeekToFirst();
     iter1->SeekToFirst();
@@ -1453,10 +1473,12 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       logfile_number_ = new_log_number;
       log_ = new log::Writer(lfile);
       /////////////meggie
+      //fprintf(stderr, "before MovetoNVMImmutable\n");
       MovetoNVMImmutable();
-      /////////////meggie
+      //fprintf(stderr, "after MovetoNVMImmutable\n");
       //imm_ = mem_;
-      has_imm_.Release_Store(imm_);
+      //has_imm_.Release_Store(imm_);
+      /////////////meggie
       mem_ = new MemTable(internal_comparator_);
       mem_->Ref();
       force = false;   // Do not force another compaction if have room
@@ -1600,9 +1622,17 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->mem_->Ref();
     }
   }
+  /////////////meggie
+  /*if(s.ok() && impl->imm_ == nullptr) {
+      impl->imm_ = impl->CreateNVMImmutable();
+  }*/
+  /////////////meggie
   if (s.ok() && save_manifest) {
     edit.SetPrevLogNumber(0);  // No older logs needed after recovery.
     edit.SetLogNumber(impl->logfile_number_);
+    ///////////meggie
+    //edit.SetMapNumber(impl->mapfile_number_);
+    ///////////meggie
     s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
   }
   if (s.ok()) {
