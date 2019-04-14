@@ -25,7 +25,8 @@ class VersionSet;
 
 class DBImpl : public DB {
  public:
-  DBImpl(const Options& options, const std::string& dbname);
+  DBImpl(const Options& options, const std::string& dbname, 
+          const std::string& dbname_nvm="");
   virtual ~DBImpl();
 
   // Implementations of the DB interface
@@ -212,7 +213,8 @@ class DBImpl : public DB {
 Options SanitizeOptions(const std::string& db,
                         const InternalKeyComparator* icmp,
                         const InternalFilterPolicy* ipolicy,
-                        const Options& src);
+                        const Options& src,
+                        const std::string& dbname_nvm="");
 
 }  // namespace leveldb
 

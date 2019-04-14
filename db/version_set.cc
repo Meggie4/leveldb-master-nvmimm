@@ -787,6 +787,9 @@ VersionSet::VersionSet(const std::string& dbname,
       last_sequence_(0),
       log_number_(0),
       prev_log_number_(0),
+      /////////////meggie
+      map_number_(0),
+      /////////////meggie
       descriptor_file_(nullptr),
       descriptor_log_(nullptr),
       dummy_versions_(this),
@@ -826,6 +829,14 @@ Status VersionSet::LogAndApply(VersionEdit* edit, port::Mutex* mu) {
     edit->SetLogNumber(log_number_);
   }
 
+  ////////////////meggie
+  if (edit->has_map_number_) {
+      assert(edit->map_number_ >= map_number_);
+      assert(edit->map_number_ < next_file_number_);
+  } else {
+    edit->SetMapNumber(map_number_);
+  }
+  ////////////////meggie
   if (!edit->has_prev_log_number_) {
     edit->SetPrevLogNumber(prev_log_number_);
   }
@@ -889,6 +900,9 @@ Status VersionSet::LogAndApply(VersionEdit* edit, port::Mutex* mu) {
     AppendVersion(v);
     log_number_ = edit->log_number_;
     prev_log_number_ = edit->prev_log_number_;
+    ////////////////meggie
+    map_number_ = edit->map_number_;
+    ////////////////meggie
   } else {
     delete v;
     if (!new_manifest_file.empty()) {
@@ -941,6 +955,10 @@ Status VersionSet::Recover(bool *save_manifest) {
   uint64_t last_sequence = 0;
   uint64_t log_number = 0;
   uint64_t prev_log_number = 0;
+  //////////////meggie
+  bool have_map_number = false;
+  uint64_t map_number = 0;
+  ////////////meggie
   Builder builder(this, current_);
 
   {
@@ -984,6 +1002,12 @@ Status VersionSet::Recover(bool *save_manifest) {
         last_sequence = edit.last_sequence_;
         have_last_sequence = true;
       }
+      ///////////////meggie
+      if (edit.has_map_number_) {
+          map_number = edit.map_number_;
+          have_map_number = true;
+      }
+      ///////////////meggie
     }
   }
   delete file;
@@ -1004,6 +1028,10 @@ Status VersionSet::Recover(bool *save_manifest) {
 
     MarkFileNumberUsed(prev_log_number);
     MarkFileNumberUsed(log_number);
+    ///////////////meggie 
+    if (have_map_number)
+        MarkFileNumberUsed(map_number);
+    ///////////////meggie
   }
 
   if (s.ok()) {
@@ -1017,6 +1045,10 @@ Status VersionSet::Recover(bool *save_manifest) {
     last_sequence_ = last_sequence;
     log_number_ = log_number;
     prev_log_number_ = prev_log_number;
+    ///////////meggie
+    if(have_map_number)
+        map_number_ = map_number;
+    ///////////meggie
 
     // See if we can reuse the existing MANIFEST file.
     if (ReuseManifest(dscname, current)) {

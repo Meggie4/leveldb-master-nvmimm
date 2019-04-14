@@ -20,11 +20,18 @@ enum Tag {
   kDeletedFile          = 6,
   kNewFile              = 7,
   // 8 was used for large value refs
-  kPrevLogNumber        = 9
+  kPrevLogNumber        = 9,
+  ////////////meggie
+  kMapNumber            = 10
+  ////////////meggie
 };
 
 void VersionEdit::Clear() {
   comparator_.clear();
+  ///////////meggie
+  map_number_ = 0;
+  has_map_number_ = false;
+  ///////////meggie
   log_number_ = 0;
   prev_log_number_ = 0;
   last_sequence_ = 0;
@@ -60,6 +67,12 @@ void VersionEdit::EncodeTo(std::string* dst) const {
     PutVarint64(dst, last_sequence_);
   }
 
+  ///////////meggie
+  if (has_map_number_) {
+      PutVarint32(dst, kMapNumber);
+      PutVarint64(dst, map_number_);
+  }
+  ///////////meggie
   for (size_t i = 0; i < compact_pointers_.size(); i++) {
     PutVarint32(dst, kCompactPointer);
     PutVarint32(dst, compact_pointers_[i].first);  // level
@@ -192,6 +205,15 @@ Status VersionEdit::DecodeFrom(const Slice& src) {
         }
         break;
 
+      ///////////////////meggie
+      case kMapNumber:
+        if(GetVarint64(&input, &map_number_)) {
+            has_map_number_ = true;
+        } else {
+            msg = "map number";
+        }
+        break;
+      ///////////////////meggie
       default:
         msg = "unknown tag";
         break;
@@ -232,6 +254,12 @@ std::string VersionEdit::DebugString() const {
     r.append("\n  LastSeq: ");
     AppendNumberTo(&r, last_sequence_);
   }
+  ////////////////meggie
+  if (has_map_number_) {
+      r.append("\n  MapNumber:");
+      AppendNumberTo(&r, map_number_);
+  }
+  ////////////////meggie
   for (size_t i = 0; i < compact_pointers_.size(); i++) {
     r.append("\n  CompactPointer: ");
     AppendNumberTo(&r, compact_pointers_[i].first);

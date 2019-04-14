@@ -435,7 +435,7 @@ class Benchmark {
     }
     ///////////////meggie
     if (!FLAGS_use_existing_db) {
-      DestroyDB(FLAGS_db, Options());
+      DestroyDB(FLAGS_db, Options(), FLAGS_nvmdb);
     }
   }
 
@@ -551,7 +551,7 @@ class Benchmark {
         } else {
           delete db_;
           db_ = nullptr;
-          DestroyDB(FLAGS_db, Options());
+          DestroyDB(FLAGS_db, Options(), FLAGS_nvmdb);
           Open();
         }
       }
@@ -732,7 +732,7 @@ class Benchmark {
     options.max_open_files = FLAGS_open_files;
     options.filter_policy = filter_policy_;
     options.reuse_logs = FLAGS_reuse_logs;
-    Status s = DB::Open(options, FLAGS_db, &db_);
+    Status s = DB::Open(options, FLAGS_db, &db_, FLAGS_nvmdb);
     if (!s.ok()) {
       fprintf(stderr, "open error: %s\n", s.ToString().c_str());
       exit(1);

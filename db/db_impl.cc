@@ -92,7 +92,8 @@ static void ClipToRange(T* ptr, V minvalue, V maxvalue) {
 Options SanitizeOptions(const std::string& dbname,
                         const InternalKeyComparator* icmp,
                         const InternalFilterPolicy* ipolicy,
-                        const Options& src) {
+                        const Options& src,
+                        const std::string& dbname_nvm) {
   Options result = src;
   result.comparator = icmp;
   result.filter_policy = (src.filter_policy != nullptr) ? ipolicy : nullptr;
@@ -103,6 +104,9 @@ Options SanitizeOptions(const std::string& dbname,
   if (result.info_log == nullptr) {
     // Open a log file in the same directory as the db
     src.env->CreateDir(dbname);  // In case it does not exist
+    //////////meggie
+    src.env->CreateDir(dbname_nvm);
+    //////////meggie
     src.env->RenameFile(InfoLogFileName(dbname), OldInfoLogFileName(dbname));
     Status s = src.env->NewLogger(InfoLogFileName(dbname), &result.info_log);
     if (!s.ok()) {
@@ -121,15 +125,20 @@ static int TableCacheSize(const Options& sanitized_options) {
   return sanitized_options.max_open_files - kNumNonTableCacheFiles;
 }
 
-DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
+DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
+            const std::string& dbname_nvm)
     : env_(raw_options.env),
       internal_comparator_(raw_options.comparator),
       internal_filter_policy_(raw_options.filter_policy),
       options_(SanitizeOptions(dbname, &internal_comparator_,
-                               &internal_filter_policy_, raw_options)),
+                               &internal_filter_policy_, raw_options,
+                               dbname_nvm)),
       owns_info_log_(options_.info_log != raw_options.info_log),
       owns_cache_(options_.block_cache != raw_options.block_cache),
       dbname_(dbname),
+      ///////////meggie
+      dbname_nvm_(dbname_nvm),
+      ///////////meggie
       table_cache_(new TableCache(dbname_, options_, TableCacheSize(options_))),
       db_lock_(nullptr),
       shutting_down_(nullptr),
@@ -138,6 +147,9 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       imm_(nullptr),
       logfile_(nullptr),
       logfile_number_(0),
+      ////////////meggie
+      mapfile_number_(0),
+      ////////////meggie
       log_(nullptr),
       seed_(0),
       tmp_batch_(new WriteBatch),
@@ -146,6 +158,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       versions_(new VersionSet(dbname_, &options_, table_cache_,
                                &internal_comparator_)) {
   has_imm_.Release_Store(nullptr);
+  nvmbuff_ = options_.nvm_buffer_size;
 }
 
 DBImpl::~DBImpl() {
@@ -243,6 +256,11 @@ void DBImpl::DeleteObsoleteFiles() {
           keep = ((number >= versions_->LogNumber()) ||
                   (number == versions_->PrevLogNumber()));
           break;
+        ////////////////meggie
+        case kMapFile:
+          keep = (number >= versions_->MapNumber());
+          break;
+        ////////////////meggie
         case kDescriptorFile:
           // Keep my manifest file, and any newer incarnations'
           // (in case there is a race that allows other incarnations)
@@ -283,6 +301,9 @@ Status DBImpl::Recover(VersionEdit* edit, bool *save_manifest) {
   // committed only when the descriptor is created, and this directory
   // may already exist from a previous failed creation attempt.
   env_->CreateDir(dbname_);
+  //////////////meggie
+  env_->CreateDir(dbname_nvm_);
+  //////////////meggie
   assert(db_lock_ == nullptr);
   Status s = env_->LockFile(LockFileName(dbname_), &db_lock_);
   if (!s.ok()) {
@@ -555,6 +576,9 @@ void DBImpl::CompactMemTable() {
   if (s.ok()) {
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);  // Earlier logs no longer needed
+    ////////////meggie
+    edit.SetMapNumber(mapfile_number_);
+    ////////////meggie
     s = versions_->LogAndApply(&edit, &mutex_);
   }
 
@@ -1331,6 +1355,42 @@ WriteBatch* DBImpl::BuildBatchGroup(Writer** last_writer) {
   return result;
 }
 
+//////////////////meggie
+MemTable* DBImpl::CreateNVMImmutable(){
+    MemTable* mem;
+#ifdef ENABLE_RECOVERY
+    uint64_t new_map_number = versions_->NewFileNumber();
+    size_t size = 0;
+    std::string filename = MapFileName(dbname_nvm_, new_map_number);
+    size = nvmbuff_;
+    mapfile_number_ = new_map_number;
+    ArenaNVM *arena= new ArenaNVM(size, &filename, false);
+#else
+    ArenaNVM *arena= new ArenaNVM();
+#endif
+    mem = new MemTable(internal_comparator_, *arena, false);
+    mem->isNVMMemtable = true;
+    assert(mem);
+    return mem;
+}
+
+void DBImpl::MovetoNVMImmutable(){
+    MemTable* immu = CreateNVMImmutable();
+    Iterator* iter = mem_->NewIterator();
+    iter->SeekToFirst();
+    for (; iter->Valid(); iter->Next()) {
+        immu->Add(iter->GetNodeKey());
+    }
+    Iterator* iter1 = immu->NewIterator();
+    iter->SeekToFirst();
+    iter1->SeekToFirst();
+    for(; iter->Valid() && iter1->Valid(); iter->Next(), iter1->Next()){
+        assert(iter->key() == iter1->key());
+    }
+    //fprintf(stderr, "finished MovetoNVMImmutable\n");
+}
+//////////////////meggie
+
 // REQUIRES: mutex_ is held
 // REQUIRES: this thread is currently at the front of the writer queue
 Status DBImpl::MakeRoomForWrite(bool force) {
@@ -1385,6 +1445,9 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       logfile_ = lfile;
       logfile_number_ = new_log_number;
       log_ = new log::Writer(lfile);
+      /////////////meggie
+      MovetoNVMImmutable();
+      /////////////meggie
       imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
@@ -1506,10 +1569,10 @@ Status DB::Delete(const WriteOptions& opt, const Slice& key) {
 DB::~DB() { }
 
 Status DB::Open(const Options& options, const std::string& dbname,
-                DB** dbptr) {
+                DB** dbptr, const std::string& dbname_nvm) {
   *dbptr = nullptr;
 
-  DBImpl* impl = new DBImpl(options, dbname);
+  DBImpl* impl = new DBImpl(options, dbname, dbname_nvm);
   impl->mutex_.Lock();
   VersionEdit edit;
   // Recover handles create_if_missing, error_if_exists
@@ -1552,15 +1615,26 @@ Status DB::Open(const Options& options, const std::string& dbname,
 Snapshot::~Snapshot() {
 }
 
-Status DestroyDB(const std::string& dbname, const Options& options) {
+Status DestroyDB(const std::string& dbname, const Options& options,
+        const std::string& dbname_nvm) {
   Env* env = options.env;
   std::vector<std::string> filenames;
+  //////////////meggie
+  std::vector<std::string> filenames_nvm;
+  //////////////meggie
   Status result = env->GetChildren(dbname, &filenames);
   if (!result.ok()) {
     // Ignore error in case directory does not exist
     return Status::OK();
   }
 
+  //////////////meggie
+  result = env->GetChildren(dbname_nvm, &filenames_nvm);
+  if(!result.ok())
+        return Status::OK();
+  filenames.insert(filenames.end(), filenames_nvm.begin(), 
+          filenames_nvm.end());
+  //////////////meggie
   FileLock* lock;
   const std::string lockname = LockFileName(dbname);
   result = env->LockFile(lockname, &lock);
@@ -1570,7 +1644,16 @@ Status DestroyDB(const std::string& dbname, const Options& options) {
     for (size_t i = 0; i < filenames.size(); i++) {
       if (ParseFileName(filenames[i], &number, &type) &&
           type != kDBLockFile) {  // Lock file will be deleted at end
-        Status del = env->DeleteFile(dbname + "/" + filenames[i]);
+        Status del;
+        /////////////////meggie
+        if(find(filenames_nvm.begin(), filenames_nvm.end(), filenames[i]) != filenames_nvm.end()){
+            fprintf(stderr, "nvm filenames:%s, delete\n", filenames[i].c_str());
+            del = env->DeleteFile(dbname_nvm + "/" + filenames[i]);
+        }
+        else{ 
+        /////////////////meggie
+            del = env->DeleteFile(dbname + "/" + filenames[i]);
+        }
         if (result.ok() && !del.ok()) {
           result = del;
         }
@@ -1579,6 +1662,9 @@ Status DestroyDB(const std::string& dbname, const Options& options) {
     env->UnlockFile(lock);  // Ignore error since state is already gone
     env->DeleteFile(lockname);
     env->DeleteDir(dbname);  // Ignore error in case dir contains other files
+    ///////////////meggie
+    env->DeleteDir(dbname_nvm);
+    ///////////////meggie
   }
   return result;
 }
