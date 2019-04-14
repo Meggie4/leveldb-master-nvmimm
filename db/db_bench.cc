@@ -5,6 +5,9 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
+///////////meggie
+#include <fstream>
+///////////meggie
 #include "leveldb/cache.h"
 #include "leveldb/db.h"
 #include "leveldb/env.h"
@@ -156,6 +159,49 @@ class RandomGenerator {
   }
 };
 
+////////////////////meggie 
+class WorkloadGenerator{
+ private:
+  std::ifstream fin;
+ public:
+  WorkloadGenerator(std::string fname):
+      fin(fname){}
+  bool isValid(std::string type){
+    char mytype = type[0];
+    if(mytype == 'i' ||
+        mytype == 'd' ||
+        mytype == 'r' ||
+        mytype == 's')
+      return true;
+    else 
+      return false;
+  }
+  Status getRequest(char* type, std::string& key, 
+      std::string& value){
+    std::string wtype;
+    if(getline(fin, wtype) && isValid(wtype)){
+      *type = wtype[0];
+      switch(*type){
+        case 'i':
+          getline(fin, key);
+          getline(fin, value);
+          break;
+        case 'd':
+        case 'r':
+        case 's':
+          getline(fin, key);
+          break;
+        default:
+          return Status::IOError("Already finished obtain request....");
+      }
+      return Status::OK();
+    }
+    else 
+      return Status::IOError("Already finished obtain request....");
+  }
+};
+
+////////////////////meggie 
 #if defined(__linux)
 static Slice TrimSpace(Slice s) {
   size_t start = 0;
@@ -267,8 +313,8 @@ class Stats {
       // elapsed times.
       double elapsed = (finish_ - start_) * 1e-6;
       char rate[100];
-      snprintf(rate, sizeof(rate), "%6.1f MB/s",
-               (bytes_ / 1048576.0) / elapsed);
+      snprintf(rate, sizeof(rate), "%6.1f MB/s, %luB",
+               (bytes_ / 1048576.0) / elapsed, bytes_);
       extra = rate;
     }
     AppendWithSpace(&extra, message_);
@@ -537,6 +583,63 @@ class Benchmark {
         PrintStats("leveldb.stats");
       } else if (name == Slice("sstables")) {
         PrintStats("leveldb.sstables");
+      ///////////////meggie
+      ///////for 100K entries
+      //////only write for 1KB value
+      } else if(name == Slice("customedworkloadzip099write")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip099Write;
+      } else if(name == Slice("customedworkloadzip080write")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip080Write;
+      } else if(name == Slice("customedworkloaduniformwrite")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniformWrite;
+      ////only write for 4KB value
+      } else if(name == Slice("customedworkloadzip099_4kwrite")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip099_4KWrite;
+      } else if(name == Slice("customedworkloadzip080_4kwrite")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip080_4KWrite;
+      } else if(name == Slice("customedworkloaduniform_4kwrite")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform_4KWrite;
+      /////////for 500K entries
+      //////only write for 1KB value
+      } else if(name == Slice("customedworkloadzip099writemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip099WriteMid;
+      } else if(name == Slice("customedworkloadzip080writemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip080WriteMid;
+      } else if(name == Slice("customedworkloaduniformwritemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniformWriteMid;
+      ////only write for 4KB value
+      } else if(name == Slice("customedworkloadzip099_4kwritemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip099_4KWriteMid;
+      } else if(name == Slice("customedworkloadzip080_4kwritemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadZip080_4KWriteMid;
+      } else if(name == Slice("customedworkloaduniform_4kwritemid")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform_4KWriteMid;
+      /////////for 1000K entries
+      //////////////meggie 
       } else {
         if (name != Slice()) {  // No error message for empty name
           fprintf(stderr, "unknown benchmark '%s'\n", name.ToString().c_str());
@@ -930,7 +1033,102 @@ class Benchmark {
       thread->stats.Start();
     }
   }
+  //////////////meggie
+  ////////for 100K entries 
+  /////only write
+  //for 1k
+  void CustomedWorkloadZip099Write(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite1k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadZip080Write(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite1k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadUniformWrite(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite1k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  ///for 4k
+  void CustomedWorkloadZip099_4KWrite(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite4k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
 
+  void CustomedWorkloadZip080_4KWrite(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite4k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform_4KWrite(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite4k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  ////////for 500K entries 
+  /////only write
+  //for 1k
+  void CustomedWorkloadZip099WriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite1k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadZip080WriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite1k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadUniformWriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite1k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  //for 4k
+  void CustomedWorkloadZip099_4KWriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite4k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadZip080_4KWriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite4k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform_4KWriteMid(ThreadState* thread){
+      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite4k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadWrite(ThreadState* thread, std::string fname) {
+    WriteBatch batch;
+    Status s;
+    int64_t bytes = 0;
+    leveldb::WorkloadGenerator wlgnerator(fname);
+    char type;
+    std::string key;
+    std::string value;
+    int batch_num = 0;
+    while(wlgnerator.getRequest(&type, key, value).ok()){
+        if(batch_num < entries_per_batch_){
+            batch.Put(key, value);
+            batch_num++;
+        }
+        else{
+            s = db_->Write(write_options_, &batch);
+            if (!s.ok()) {
+                fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+                exit(1);
+            }
+            batch.Clear();
+            batch.Put(key, value);
+            batch_num = 1;
+        }
+        bytes += value.size() + key.size();
+        thread->stats.FinishedSingleOp();
+    }
+    //fprintf(stderr, "add bytes:%lu\n", bytes);
+    thread->stats.AddBytes(bytes);
+  }
+  //////////////meggie
   void Compact(ThreadState* thread) {
     db_->CompactRange(nullptr, nullptr);
   }

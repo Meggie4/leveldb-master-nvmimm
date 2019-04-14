@@ -181,6 +181,8 @@ stdio.h
 -
 stdlib.h
 -
+fstream
+-
 leveldb/cache.h
 /home/meggie/文档/leveldb-master-nvmimm/db/leveldb/cache.h
 leveldb/db.h

@@ -147,7 +147,7 @@ ArenaNVM::ArenaNVM(long size, std::string *filename, bool recovery)
         alloc_bytes_remaining_ = 0;
         map_start_ = map_end_ = 0;
         nvmarena_ = true;
-        kSize = MEM_THRESH * size;
+        kSize = size;
         mfile = *filename;
         fd = -1;
         allocation = false;
@@ -233,6 +233,7 @@ char* ArenaNVM::AllocateNVMBlock(size_t block_bytes) {
     }
 
     char *result = (char *)mmap(NULL, MEM_THRESH * block_bytes, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+    fprintf(stderr, "nvmarena size:%zd\n", block_bytes);
     allocation = true;
     blocks_.push_back(result);
     assert(blocks_.size() <= 1);

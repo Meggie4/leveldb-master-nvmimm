@@ -159,6 +159,9 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
                                &internal_comparator_)) {
   has_imm_.Release_Store(nullptr);
   nvmbuff_ = options_.nvm_buffer_size;
+  ///////////meggie
+  fprintf(stderr, "nvmbuffsize:%lu\n", nvmbuff_);
+  ///////////meggie
 }
 
 DBImpl::~DBImpl() {
@@ -263,6 +266,7 @@ void DBImpl::DeleteObsoleteFiles() {
       bool keep = true;
       switch (type) {
         case kLogFile:
+          //fprintf(stderr, "log number:%lu\n", versions_->LogNumber());
           keep = ((number >= versions_->LogNumber()) ||
                   (number == versions_->PrevLogNumber()));
           break;
@@ -704,7 +708,12 @@ void DBImpl::MaybeScheduleCompaction() {
              manual_compaction_ == nullptr &&
              !versions_->NeedsCompaction()) {
     // No work to be done
+  ////////////meggie
+  } else if (imm_ != nullptr && 
+          imm_->ApproximateMemoryUsage() < options_.nvm_buffer_size){
+  ////////////meggie
   } else {
+    fprintf(stderr, "nvm usage:%lu\n", imm_->ApproximateMemoryUsage());
     background_compaction_scheduled_ = true;
     env_->Schedule(&DBImpl::BGWork, this);
   }
@@ -1405,6 +1414,15 @@ void DBImpl::MovetoNVMImmutable(){
     for (; iter->Valid(); iter->Next()) {
         imm_->Add(iter->GetNodeKey());
     }
+    fprintf(stderr, "after MovetoNVMImmutable, nvm usage:%lu\n", 
+            imm_->ApproximateMemoryUsage());
+    VersionEdit edit;
+    edit.SetPrevLogNumber(0);
+    edit.SetLogNumber(logfile_number_);
+    edit.SetMapNumber(mapfile_number_);
+    Status s = versions_->LogAndApply(&edit, &mutex_);
+    if(s.ok())
+        DeleteObsoleteFiles();
     /*Iterator* iter1 = immu->NewIterator();
     iter->SeekToFirst();
     iter1->SeekToFirst();
@@ -1445,11 +1463,14 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       // There is room in current memtable
       break;
     ////////////meggie
+   // }else if(imm_){
+    
     } else if (imm_ &&
             imm_->ApproximateMemoryUsage() >= options_.nvm_buffer_size) {
     ///////////meggie
       // We have filled up the current memtable, but the previous
       // one is still being compacted, so we wait.
+      fprintf(stderr, "nvm usage:%lu\n", imm_->ApproximateMemoryUsage());
       Log(options_.info_log, "Current memtable full; waiting...\n");
       background_work_finished_signal_.Wait();
     } else if (versions_->NumLevelFiles(0) >= config::kL0_StopWritesTrigger) {
@@ -1476,8 +1497,8 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       //fprintf(stderr, "before MovetoNVMImmutable\n");
       MovetoNVMImmutable();
       //fprintf(stderr, "after MovetoNVMImmutable\n");
-      //imm_ = mem_;
-      //has_imm_.Release_Store(imm_);
+      imm_ = mem_;
+      has_imm_.Release_Store(imm_);
       /////////////meggie
       mem_ = new MemTable(internal_comparator_);
       mem_->Ref();

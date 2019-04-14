@@ -244,6 +244,9 @@ LEVELDB_INSTALL:BOOL=ON
 //Define macro
 USE_OFFSETS:BOOL=ON
 
+//Define macro
+_USE_ARENA2_ALLOC:BOOL=ON
+
 //Value Computed by CMake
 leveldb_BINARY_DIR:STATIC=/home/meggie/文档/leveldb-master-nvmimm/build
 

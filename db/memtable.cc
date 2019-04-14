@@ -197,7 +197,7 @@ void MemTable::Add(SequenceNumber s, ValueType type,
         ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
         buf = nvm_arena->Allocate(encoded_len);
     }else {
-        buf = arena_.Allocate(encoded_len);
+        buf = arena_.AllocateAligned(encoded_len);
     }
     if(!buf){
         perror("Memory allocation failed");
@@ -255,7 +255,7 @@ void MemTable::Add(const char* kvitem){
 
     if(arena_.nvmarena_) {
         ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
-        buf = nvm_arena->Allocate(kvlength);
+        buf = nvm_arena->AllocateAlignedNVM(kvlength);
     }else {
         buf = arena_.Allocate(kvlength);
     }
