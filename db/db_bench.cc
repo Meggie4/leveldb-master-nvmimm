@@ -61,7 +61,7 @@ static const char* FLAGS_benchmarks =
     ;*/
 
 // Number of key/values to place in database
-static int FLAGS_num = 1000000;
+static int FLAGS_num = 100000;
 
 // Number of read operations to do.  If negative, do FLAGS_num reads.
 static int FLAGS_reads = -1;
@@ -70,7 +70,7 @@ static int FLAGS_reads = -1;
 static int FLAGS_threads = 1;
 
 // Size of each value
-static int FLAGS_value_size = 100;
+static int FLAGS_value_size = 1000;
 
 // Arrange to generate values that shrink to this fraction of
 // their original size after compression
@@ -1006,10 +1006,10 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--value_size=%d%c", &n, &junk) == 1) {
       FLAGS_value_size = n;
     } else if (sscanf(argv[i], "--write_buffer_size=%d%c", &n, &junk) == 1) {
-      FLAGS_write_buffer_size = n;
+      FLAGS_write_buffer_size = n * 1024L * 1024L;
     /////////////////meggie
     } else if (sscanf(argv[i], "--nvm_buffer_size=%d%c", &n, &junk) == 1) {
-      FLAGS_nvm_buffer_size = n;
+      FLAGS_nvm_buffer_size = n * 1024L * 1024L;
     /////////////////meggie
     } else if (sscanf(argv[i], "--max_file_size=%d%c", &n, &junk) == 1) {
       FLAGS_max_file_size = n;

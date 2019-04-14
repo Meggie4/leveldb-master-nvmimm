@@ -253,11 +253,11 @@ void MemTable::Add(const char* kvitem){
     GetKVLength(kvitem, &key_length, &kvlength);
     char* buf = NULL;
 
-    if(arena_->nvmarena_) {
-        ArenaNVM *nvm_arena = (ArenaNVM *)arena_;
+    if(arena_.nvmarena_) {
+        ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
         buf = nvm_arena->Allocate(kvlength);
     }else {
-        buf = arena_->Allocate(kvlength);
+        buf = arena_.Allocate(kvlength);
     }
     if(!buf){
         perror("Memory allocation failed");

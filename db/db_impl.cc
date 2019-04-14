@@ -936,6 +936,10 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
     Slice key = input->key();
     if (compact->compaction->ShouldStopBefore(key) &&
         compact->builder != nullptr) {
+      ///////////////meggie
+      Log(options_.info_log, "meggie, stopbefore, size:%lu\n",
+              compact->builder->FileSize());
+      ///////////////meggie
       status = FinishCompactionOutputFile(compact, input);
       if (!status.ok()) {
         break;
@@ -1004,6 +1008,10 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
       // Close output file if it is big enough
       if (compact->builder->FileSize() >=
           compact->compaction->MaxOutputFileSize()) {
+        ///////////////meggie
+        Log(options_.info_log, "meggie, big enough, size:%lu\n",
+              compact->builder->FileSize());
+        ///////////////meggie
         status = FinishCompactionOutputFile(compact, input);
         if (!status.ok()) {
           break;
