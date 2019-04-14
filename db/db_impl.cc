@@ -1370,23 +1370,27 @@ MemTable* DBImpl::CreateNVMImmutable(){
 #endif
     mem = new MemTable(internal_comparator_, *arena, false);
     mem->isNVMMemtable = true;
+    mem->Ref();
     assert(mem);
     return mem;
 }
 
 void DBImpl::MovetoNVMImmutable(){
-    MemTable* immu = CreateNVMImmutable();
+    if(imm_ == nullptr){
+        imm_ = CreateNVMImmutable();
+    }
     Iterator* iter = mem_->NewIterator();
     iter->SeekToFirst();
     for (; iter->Valid(); iter->Next()) {
-        immu->Add(iter->GetNodeKey());
+        imm_->Add(iter->GetNodeKey());
     }
-    Iterator* iter1 = immu->NewIterator();
+    
+    /*Iterator* iter1 = immu->NewIterator();
     iter->SeekToFirst();
     iter1->SeekToFirst();
     for(; iter->Valid() && iter1->Valid(); iter->Next(), iter1->Next()){
         assert(iter->key() == iter1->key());
-    }
+    }*/
     //fprintf(stderr, "finished MovetoNVMImmutable\n");
 }
 //////////////////meggie
@@ -1420,7 +1424,10 @@ Status DBImpl::MakeRoomForWrite(bool force) {
                (mem_->ApproximateMemoryUsage() <= options_.write_buffer_size)) {
       // There is room in current memtable
       break;
-    } else if (imm_ != nullptr) {
+    ////////////meggie
+    } else if (imm_ &&
+            imm_->ApproximateMemoryUsage() >= options_.nvm_buffer_size) {
+    ///////////meggie
       // We have filled up the current memtable, but the previous
       // one is still being compacted, so we wait.
       Log(options_.info_log, "Current memtable full; waiting...\n");
@@ -1448,7 +1455,7 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       /////////////meggie
       MovetoNVMImmutable();
       /////////////meggie
-      imm_ = mem_;
+      //imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
       mem_->Ref();
