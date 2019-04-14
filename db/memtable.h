@@ -103,6 +103,9 @@ public:
 	//NoveLSM: Making them public for easier debugging
 	//TODO: Revert back to private mode
 	Arena arena_;
+    ////////////meggie
+    Arena* arena_nvm_;
+    ////////////meggie
 
 	//NoveLSM Swap/Alternate between nvm and DRAM arena
 	bool isNVMMemtable;

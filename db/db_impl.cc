@@ -467,6 +467,9 @@ Status DBImpl::RecoverLogFile(uint64_t log_number, bool last_log,
 
     if (mem == nullptr) {
       mem = new MemTable(internal_comparator_);
+      //////////meggie
+      mem->isNVMMemtable = false;
+      //////////meggie
       mem->Ref();
     }
     status = WriteBatchInternal::InsertInto(&batch, mem);
@@ -514,6 +517,9 @@ Status DBImpl::RecoverLogFile(uint64_t log_number, bool last_log,
       } else {
         // mem can be nullptr if lognum exists but was empty.
         mem_ = new MemTable(internal_comparator_);
+        //////////meggie
+        mem_->isNVMMemtable = false;
+        //////////meggie
         mem_->Ref();
       }
     }
@@ -1411,10 +1417,16 @@ void DBImpl::MovetoNVMImmutable(){
     }
     Iterator* iter = mem_->NewIterator();
     iter->SeekToFirst();
+    if(!iter->Valid()){
+        fprintf(stderr, "mem Iterator is unvalid\n");
+    }
+    int count = 0;
     for (; iter->Valid(); iter->Next()) {
+        count++;
         imm_->Add(iter->GetNodeKey());
     }
-    fprintf(stderr, "after MovetoNVMImmutable, nvm usage:%lu\n", 
+    fprintf(stderr, "count:%d, after MovetoNVMImmutable,\ 
+            nvm usage:%lu\n", count, 
             imm_->ApproximateMemoryUsage());
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
@@ -1497,10 +1509,13 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       //fprintf(stderr, "before MovetoNVMImmutable\n");
       MovetoNVMImmutable();
       //fprintf(stderr, "after MovetoNVMImmutable\n");
-      imm_ = mem_;
-      has_imm_.Release_Store(imm_);
+      //imm_ = mem_;
+      //has_imm_.Release_Store(imm_);
       /////////////meggie
       mem_ = new MemTable(internal_comparator_);
+      //////////meggie
+      mem_->isNVMMemtable = false;
+      //////////meggie
       mem_->Ref();
       force = false;   // Do not force another compaction if have room
       MaybeScheduleCompaction();
@@ -1640,6 +1655,9 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->logfile_number_ = new_log_number;
       impl->log_ = new log::Writer(lfile);
       impl->mem_ = new MemTable(impl->internal_comparator_);
+      //////////meggie
+      impl->mem_->isNVMMemtable = false;
+      //////////meggie
       impl->mem_->Ref();
     }
   }

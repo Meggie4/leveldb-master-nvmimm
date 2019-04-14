@@ -60,6 +60,9 @@ MemTable::MemTable(const InternalKeyComparator& cmp)
   logfile_number(0),
   numkeys_(0),
   bloom_(BLOOMSIZE, BLOOMHASH),
+  ////////////meggie
+  arena_nvm_(nullptr),
+  ////////////meggie
   table_(comparator_, &arena_) {
 }
 
@@ -67,11 +70,10 @@ MemTable::MemTable(const InternalKeyComparator& cmp, ArenaNVM& arena, bool recov
 : comparator_(cmp),
   refs_(0),
   logfile_number(0),
-  arena_(arena),
+  arena_nvm_(&arena),
   numkeys_(0),
   bloom_(BLOOMSIZE, BLOOMHASH),
-  table_(comparator_, &arena_, recovery){
-    arena_.nvmarena_ = arena.nvmarena_;
+  table_(comparator_, arena_nvm_, recovery){
 }
 
 
@@ -83,7 +85,7 @@ MemTable::~MemTable() {
 size_t MemTable::ApproximateMemoryUsage() 
 {
     if(this->isNVMMemtable == true) {
-        ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
+        ArenaNVM* nvm_arena =(ArenaNVM*)arena_nvm_;
         return nvm_arena->MemoryUsage();
     }
     return arena_.MemoryUsage();
@@ -193,8 +195,8 @@ void MemTable::Add(SequenceNumber s, ValueType type,
             VarintLength(val_size) + val_size;
     char* buf = NULL;
 
-    if(arena_.nvmarena_) {
-        ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
+    if(arena_nvm_) {
+        ArenaNVM* nvm_arena =(ArenaNVM*) arena_nvm_;
         buf = nvm_arena->Allocate(encoded_len);
     }else {
         buf = arena_.AllocateAligned(encoded_len);
@@ -253,8 +255,9 @@ void MemTable::Add(const char* kvitem){
     GetKVLength(kvitem, &key_length, &kvlength);
     char* buf = NULL;
 
-    if(arena_.nvmarena_) {
-        ArenaNVM *nvm_arena = (ArenaNVM *)&arena_;
+    if(arena_nvm_) {
+        ArenaNVM* nvm_arena =(ArenaNVM*) arena_nvm_;
+        //fprintf(stderr, "kvlength:%lu\n", kvlength);
         buf = nvm_arena->AllocateAlignedNVM(kvlength);
     }else {
         buf = arena_.Allocate(kvlength);
