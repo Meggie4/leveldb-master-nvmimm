@@ -252,6 +252,9 @@ class VersionSet {
   // Returns true iff some level needs a compaction.
   bool NeedsCompaction() const {
     Version* v = current_;
+    ///////////meggie
+    assert(v != nullptr);
+    ///////////meggie
     return (v->compaction_score_ >= 1) || (v->file_to_compact_ != nullptr);
   }
 

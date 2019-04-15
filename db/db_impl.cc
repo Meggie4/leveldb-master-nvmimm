@@ -719,7 +719,6 @@ void DBImpl::MaybeScheduleCompaction() {
           imm_->ApproximateMemoryUsage() < options_.nvm_buffer_size){
   ////////////meggie
   } else {
-    fprintf(stderr, "nvm usage:%lu\n", imm_->ApproximateMemoryUsage());
     background_compaction_scheduled_ = true;
     env_->Schedule(&DBImpl::BGWork, this);
   }
@@ -1420,14 +1419,11 @@ void DBImpl::MovetoNVMImmutable(){
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
-    int count = 0;
     for (; iter->Valid(); iter->Next()) {
-        count++;
         imm_->Add(iter->GetNodeKey());
     }
-    fprintf(stderr, "count:%d, after MovetoNVMImmutable,\ 
-            nvm usage:%lu\n", count, 
-            imm_->ApproximateMemoryUsage());
+   // fprintf(stderr, "after MovetoNVMImmutable, nvm usage:%lu\n",  
+     //       imm_->ApproximateMemoryUsage());
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);
@@ -1482,7 +1478,6 @@ Status DBImpl::MakeRoomForWrite(bool force) {
     ///////////meggie
       // We have filled up the current memtable, but the previous
       // one is still being compacted, so we wait.
-      fprintf(stderr, "nvm usage:%lu\n", imm_->ApproximateMemoryUsage());
       Log(options_.info_log, "Current memtable full; waiting...\n");
       background_work_finished_signal_.Wait();
     } else if (versions_->NumLevelFiles(0) >= config::kL0_StopWritesTrigger) {
