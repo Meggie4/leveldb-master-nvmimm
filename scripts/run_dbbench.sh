@@ -2,7 +2,7 @@
 #set -x
 
 NUMTHREAD=1
-BENCHMARKS="customedworkloadzip099_4kwritemid"
+BENCHMARKS="customedworkloaduniform_4kwrite"
 #BENCHMARKS="customedworkloadzip099write,customedworkloadzip080write,\
 #customedworkloaduniformwrite,customedworkloadzip099_4kwrite,\
 #customedworkloadzip080_4kwrite,customedworkloaduniform_4kwrite,\
