@@ -98,6 +98,10 @@ class DBImpl : public DB {
 
   Status WriteLevel0Table(MemTable* mem, VersionEdit* edit, Version* base)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  ///////////meggie
+  Status WriteImmutoLevel0(MemTable* mem, VersionEdit* edit, 
+        Version* base) EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  ///////////meggie
 
   Status MakeRoomForWrite(bool force /* compact even if there is room? */)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);

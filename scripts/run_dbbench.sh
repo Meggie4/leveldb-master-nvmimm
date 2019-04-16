@@ -2,6 +2,19 @@
 #set -x
 
 NUMTHREAD=1
+#BENCHMARKS="customedworkloadzip099write,customedworkloadzip080write,\
+#customedworkloaduniformwrite,customedworkloadzip099_4kwrite,\
+#customedworkloadzip080_4kwrite,customedworkloaduniform_4kwrite,\
+#customedworkloadzip099writemid,customedworkloadzip080writemid,\
+#customedworkloaduniformwritemid,customedworkloadzip099_4kwritemid,\
+#customedworkloadzip080_4kwritemid,customedworkloaduniform_4kwritemid,\
+#customedworkloadzip099writelarge,\
+#customedworkloadzip080writelarge,\
+#customedworkloaduniformwritelarge,\
+#customedworkloadzip099_4kwritelarge,\
+#customedworkloadzip080_4kwritelarge,\
+#customedworkloaduniform_4kwritelarge"
+
 #BENCHMARKS="customedworkloadzip099write"
 #BENCHMARKS="customedworkloadzip080write"
 #BENCHMARKS="customedworkloaduniformwrite"
@@ -9,11 +22,18 @@ NUMTHREAD=1
 #BENCHMARKS="customedworkloadzip080_4kwrite"
 #BENCHMARKS="customedworkloaduniform_4kwrite"
 #BENCHMARKS="customedworkloadzip099writemid"
-#BENCHMARKS="customedworkloadzip080writemid"
+BENCHMARKS="customedworkloadzip080writemid"
 #BENCHMARKS="customedworkloaduniformwritemid"
 #BENCHMARKS="customedworkloadzip099_4kwritemid"
 #BENCHMARKS="customedworkloadzip080_4kwritemid"
-BENCHMARKS="customedworkloaduniform_4kwritemid"
+#BENCHMARKS="customedworkloaduniform_4kwritemid"
+
+#BENCHMARKS="customedworkloadzip099writelarge,\
+#customedworkloadzip080writelarge,\
+#customedworkloaduniformwritelarge,\
+#customedworkloadzip099_4kwritelarge,\
+#customedworkloadzip080_4kwritelarge,\
+#customedworkloaduniform_4kwritelarge"
 
 #NoveLSM specific parameters
 #NoveLSM uses memtable levels, always set to num_levels 2

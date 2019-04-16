@@ -160,7 +160,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
   has_imm_.Release_Store(nullptr);
   nvmbuff_ = options_.nvm_buffer_size;
   ///////////meggie
-  fprintf(stderr, "nvmbuffsize:%lu\n", nvmbuff_);
+  //fprintf(stderr, "nvmbuffsize:%lu\n", nvmbuff_);
   ///////////meggie
 }
 
@@ -536,6 +536,91 @@ Status DBImpl::RecoverLogFile(uint64_t log_number, bool last_log,
 
   return status;
 }
+////////////////meggie
+Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit, 
+        Version* base){
+  //fprintf(stderr, "start\n");
+  mutex_.AssertHeld();
+  //fprintf(stderr, "is not AssertHeld\n");
+  const uint64_t start_micros = env_->NowMicros();
+  Iterator* iter = mem->NewIterator();
+  TableBuilder* builder = nullptr;
+  WritableFile* file = nullptr;
+  FileMetaData meta;
+  int level = 0;
+  iter->SeekToFirst();
+  Status s;
+  {
+    mutex_.Unlock();
+    if (iter->Valid()) {
+      for(; iter->Valid(); iter->Next()){
+          if(!builder){
+            meta.number = versions_->NewFileNumber();
+            pending_outputs_.insert(meta.number);
+            std::string fname = TableFileName(dbname_, meta.number);
+            s = env_->NewWritableFile(fname, &file);
+            if (!s.ok()) {
+              return s;
+            }
+            builder = new TableBuilder(options_, file);
+          }
+          Slice key = iter->key();
+          if(builder->NumEntries() == 0){
+              meta.smallest.DecodeFrom(key);
+          }
+          meta.largest.DecodeFrom(key);
+          builder->Add(key, iter->value());
+          if(builder->FileSize() >= options_.write_buffer_size){
+              s = builder->Finish();
+              meta.file_size = builder->FileSize();
+              const Slice min_user_key = meta.smallest.user_key();
+              const Slice max_user_key = meta.largest.user_key();
+              if(!s.ok())
+                  break;
+              s = file->Sync();
+              if(s.ok())
+              s = file->Close();
+              delete builder;
+              builder = nullptr;
+              delete file;
+              file = nullptr;
+              if (base != nullptr) {
+                level = base->PickLevelForMemTableOutput(min_user_key, max_user_key);
+              }
+              edit->AddFile(level, meta.number, meta.file_size,
+                  meta.smallest, meta.largest);
+              pending_outputs_.erase(meta.number);
+          }
+      }
+      if(builder){
+        s = builder->Finish();
+        meta.file_size = builder->FileSize();
+        const Slice min_user_key = meta.smallest.user_key();
+        const Slice max_user_key = meta.largest.user_key();
+        if(s.ok())
+            s = file->Sync();
+        if(s.ok())
+            s = file->Close();
+        delete builder;
+        builder = nullptr;
+        delete file;
+        file = nullptr;
+        if (base != nullptr) {
+          level = base->PickLevelForMemTableOutput(min_user_key, max_user_key);
+        }
+        edit->AddFile(level, meta.number, meta.file_size,
+            meta.smallest, meta.largest);
+        pending_outputs_.erase(meta.number);
+      }
+    }
+    else{
+      fprintf(stderr, "iter is not valid\n");
+    }
+    mutex_.Lock();
+  }
+  return s;
+}
+////////////////meggie
 
 Status DBImpl::WriteLevel0Table(MemTable* mem, VersionEdit* edit,
                                 Version* base) {
@@ -591,7 +676,11 @@ void DBImpl::CompactMemTable() {
   VersionEdit edit;
   Version* base = versions_->current();
   base->Ref();
-  Status s = WriteLevel0Table(imm_, &edit, base);
+  //////////////meggie
+  //fprintf(stderr, "to WriteImmutoLevel0\n");
+  //Status s = WriteLevel0Table(imm_, &edit, base);
+  Status s = WriteImmutoLevel0(imm_, &edit, base);
+  //////////////meggie
   base->Unref();
 
   if (s.ok() && shutting_down_.Acquire_Load()) {
@@ -1416,14 +1505,16 @@ void DBImpl::MovetoNVMImmutable(){
     }
     Iterator* iter = mem_->NewIterator();
     iter->SeekToFirst();
+    size_t count = 0;
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
     for (; iter->Valid(); iter->Next()) {
         imm_->Add(iter->GetNodeKey());
+        count++;
     }
-   // fprintf(stderr, "after MovetoNVMImmutable, nvm usage:%lu\n",  
-     //       imm_->ApproximateMemoryUsage());
+    Log(options_.info_log, "after MovetoNVMImmutable, nvm usage:%lu\n",  
+            imm_->ApproximateMemoryUsage());
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);
@@ -1718,7 +1809,7 @@ Status DestroyDB(const std::string& dbname, const Options& options,
         Status del;
         /////////////////meggie
         if(find(filenames_nvm.begin(), filenames_nvm.end(), filenames[i]) != filenames_nvm.end()){
-            fprintf(stderr, "nvm filenames:%s, delete\n", filenames[i].c_str());
+            //fprintf(stderr, "nvm filenames:%s, delete\n", filenames[i].c_str());
             del = env->DeleteFile(dbname_nvm + "/" + filenames[i]);
         }
         else{ 

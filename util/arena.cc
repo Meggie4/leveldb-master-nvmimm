@@ -233,7 +233,7 @@ char* ArenaNVM::AllocateNVMBlock(size_t block_bytes) {
     }
 
     char *result = (char *)mmap(NULL, MEM_THRESH * block_bytes, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
-    fprintf(stderr, "nvmarena size:%zd\n", block_bytes);
+    //fprintf(stderr, "nvmarena size:%zd\n", block_bytes);
     allocation = true;
     blocks_.push_back(result);
     assert(blocks_.size() <= 1);
