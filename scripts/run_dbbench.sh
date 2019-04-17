@@ -22,11 +22,11 @@ NUMTHREAD=1
 #BENCHMARKS="customedworkloadzip080_4kwrite"
 #BENCHMARKS="customedworkloaduniform_4kwrite"
 #BENCHMARKS="customedworkloadzip099writemid"
-BENCHMARKS="customedworkloadzip080writemid"
+#BENCHMARKS="customedworkloadzip080writemid"
 #BENCHMARKS="customedworkloaduniformwritemid"
 #BENCHMARKS="customedworkloadzip099_4kwritemid"
 #BENCHMARKS="customedworkloadzip080_4kwritemid"
-#BENCHMARKS="customedworkloaduniform_4kwritemid"
+BENCHMARKS="customedworkloaduniform_4kwritemid"
 
 #BENCHMARKS="customedworkloadzip099writelarge,\
 #customedworkloadzip080writelarge,\

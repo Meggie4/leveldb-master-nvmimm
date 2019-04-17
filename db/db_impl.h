@@ -101,6 +101,7 @@ class DBImpl : public DB {
   ///////////meggie
   Status WriteImmutoLevel0(MemTable* mem, VersionEdit* edit, 
         Version* base) EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  void CompactNVMImmutable() EXCLUSIVE_LOCKS_REQUIRED(mutex_);
   ///////////meggie
 
   Status MakeRoomForWrite(bool force /* compact even if there is room? */)
@@ -138,6 +139,8 @@ class DBImpl : public DB {
   uint64_t mapfile_number_;
   MemTable* CreateNVMImmutable();
   void MovetoNVMImmutable();
+  MemTable* nvmimm_ GUARDED_BY(mutex_); 
+  port::AtomicPointer has_nvmimm_;      
   ////////////////meggie
 
   // table_cache_ provides its own synchronization

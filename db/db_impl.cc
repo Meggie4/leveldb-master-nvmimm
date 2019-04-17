@@ -149,6 +149,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
       logfile_number_(0),
       ////////////meggie
       mapfile_number_(0),
+      nvmimm_(nullptr),
       ////////////meggie
       log_(nullptr),
       seed_(0),
@@ -158,8 +159,9 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
       versions_(new VersionSet(dbname_, &options_, table_cache_,
                                &internal_comparator_)) {
   has_imm_.Release_Store(nullptr);
-  nvmbuff_ = options_.nvm_buffer_size;
   ///////////meggie
+  nvmbuff_ = options_.nvm_buffer_size;
+  has_nvmimm_.Release_Store(nullptr);
   //fprintf(stderr, "nvmbuffsize:%lu\n", nvmbuff_);
   ///////////meggie
 }
@@ -180,6 +182,9 @@ DBImpl::~DBImpl() {
   delete versions_;
   if (mem_ != nullptr) mem_->Unref();
   if (imm_ != nullptr) imm_->Unref();
+  ////////////meggie
+  if (nvmimm_ != nullptr) nvmimm_->Unref();
+  ////////////meggie
   delete tmp_batch_;
   delete log_;
   delete logfile_;
@@ -668,19 +673,17 @@ Status DBImpl::WriteLevel0Table(MemTable* mem, VersionEdit* edit,
   return s;
 }
 
-void DBImpl::CompactMemTable() {
+
+//////////////meggie
+void DBImpl::CompactNVMImmutable(){
   mutex_.AssertHeld();
-  assert(imm_ != nullptr);
+  assert(nvmimm_ != nullptr);
 
   // Save the contents of the memtable as a new Table
   VersionEdit edit;
   Version* base = versions_->current();
   base->Ref();
-  //////////////meggie
-  //fprintf(stderr, "to WriteImmutoLevel0\n");
-  //Status s = WriteLevel0Table(imm_, &edit, base);
-  Status s = WriteImmutoLevel0(imm_, &edit, base);
-  //////////////meggie
+  Status s = WriteImmutoLevel0(nvmimm_, &edit, base);
   base->Unref();
 
   if (s.ok() && shutting_down_.Acquire_Load()) {
@@ -689,23 +692,46 @@ void DBImpl::CompactMemTable() {
 
   // Replace immutable memtable with the generated Table
   if (s.ok()) {
-    edit.SetPrevLogNumber(0);
-    edit.SetLogNumber(logfile_number_);  // Earlier logs no longer needed
-    ////////////meggie
-    edit.SetMapNumber(mapfile_number_);
-    ////////////meggie
+    s = versions_->LogAndApply(&edit, &mutex_);
+  }
+
+  if (s.ok()) {
+    // Commit to the new state
+    nvmimm_->Unref();
+    nvmimm_ = nullptr;
+    has_nvmimm_.Release_Store(nullptr);
+    DeleteObsoleteFiles();
+  } else {
+    RecordBackgroundError(s);
+  }
+}
+//////////////meggie
+
+void DBImpl::CompactMemTable() {
+  mutex_.AssertHeld();
+  assert(imm_ != nullptr);
+
+  // Save the contents of the memtable as a new Table
+  VersionEdit edit;
+  Version* base = versions_->current();
+  base->Ref();
+  Status s = WriteLevel0Table(imm_, &edit, base);
+  base->Unref();
+
+  if (s.ok() && shutting_down_.Acquire_Load()) {
+    s = Status::IOError("Deleting DB during memtable compaction");
+  }
+
+  // Replace immutable memtable with the generated Table
+  if (s.ok()) {
     s = versions_->LogAndApply(&edit, &mutex_);
   }
 
   if (s.ok()) {
     // Commit to the new state
     imm_->Unref();
-    /////////////meggie
-    //imm_ = CreateNVMImmutable();
     imm_ = nullptr;
-    has_imm_.Release_Store(nullptr);
-    //has_imm_.Release_Store(imm_);
-    /////////////meggie
+    has_imm_.Release_Store(imm_);
     DeleteObsoleteFiles();
   } else {
     RecordBackgroundError(s);
@@ -801,13 +827,17 @@ void DBImpl::MaybeScheduleCompaction() {
     // Already got an error; no more changes
   } else if (imm_ == nullptr &&
              manual_compaction_ == nullptr &&
-             !versions_->NeedsCompaction()) {
+             !versions_->NeedsCompaction() &&
+             //////////meggie
+             (!nvmimm_ ||(nvmimm_ && 
+               nvmimm_->ApproximateMemoryUsage() < options_.nvm_buffer_size)
+              )
+             //////////meggie
+             ) {
+    //fprintf(stderr, "Nothing to do\n");
     // No work to be done
-  ////////////meggie
-  } else if (imm_ != nullptr && 
-          imm_->ApproximateMemoryUsage() < options_.nvm_buffer_size){
-  ////////////meggie
   } else {
+    //fprintf(stderr, "before start compaction\n");
     background_compaction_scheduled_ = true;
     env_->Schedule(&DBImpl::BGWork, this);
   }
@@ -839,11 +869,17 @@ void DBImpl::BackgroundCall() {
 void DBImpl::BackgroundCompaction() {
   mutex_.AssertHeld();
 
+  /////////////meggie
   if (imm_ != nullptr) {
-    CompactMemTable();
+    //fprintf(stderr, "start MovetoNVMImmutable\n");
+    MovetoNVMImmutable();
     return;
   }
-
+  if(nvmimm_ && nvmimm_->ApproximateMemoryUsage() >= options_.nvm_buffer_size){
+    CompactNVMImmutable();
+    return;
+  }
+  /////////////meggie
   Compaction* c;
   bool is_manual = (manual_compaction_ != nullptr);
   InternalKey manual_end;
@@ -1072,7 +1108,10 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
       const uint64_t imm_start = env_->NowMicros();
       mutex_.Lock();
       if (imm_ != nullptr) {
-        CompactMemTable();
+        /////////////meggie
+        //CompactMemTable();
+        MovetoNVMImmutable();
+        /////////////meggie
         // Wake up MakeRoomForWrite() if necessary.
         background_work_finished_signal_.SignalAll();
       }
@@ -1499,29 +1538,34 @@ MemTable* DBImpl::CreateNVMImmutable(){
 }
 
 void DBImpl::MovetoNVMImmutable(){
-    if(imm_ == nullptr){
-        imm_ = CreateNVMImmutable();
-        assert(imm_ != nullptr);
+    if(nvmimm_ == nullptr){
+        nvmimm_ = CreateNVMImmutable();
+        assert(nvmimm_ != nullptr);
     }
-    Iterator* iter = mem_->NewIterator();
+    Iterator* iter = imm_->NewIterator();
     iter->SeekToFirst();
     size_t count = 0;
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
     for (; iter->Valid(); iter->Next()) {
-        imm_->Add(iter->GetNodeKey());
+        nvmimm_->Add(iter->GetNodeKey());
         count++;
     }
     Log(options_.info_log, "after MovetoNVMImmutable, nvm usage:%lu\n",  
-            imm_->ApproximateMemoryUsage());
+            nvmimm_->ApproximateMemoryUsage());
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);
     edit.SetMapNumber(mapfile_number_);
     Status s = versions_->LogAndApply(&edit, &mutex_);
-    if(s.ok())
+
+    if(s.ok()){
+        imm_->Unref();
+        imm_ = nullptr;
+        has_imm_.Release_Store(nullptr);
         DeleteObsoleteFiles();
+    }
     /*Iterator* iter1 = immu->NewIterator();
     iter->SeekToFirst();
     iter1->SeekToFirst();
@@ -1561,17 +1605,18 @@ Status DBImpl::MakeRoomForWrite(bool force) {
                (mem_->ApproximateMemoryUsage() <= options_.write_buffer_size)) {
       // There is room in current memtable
       break;
-    ////////////meggie
-   // }else if(imm_){
-    
-    } else if (imm_ &&
-            imm_->ApproximateMemoryUsage() >= options_.nvm_buffer_size) {
-    ///////////meggie
+    }else if(imm_){
       // We have filled up the current memtable, but the previous
       // one is still being compacted, so we wait.
       Log(options_.info_log, "Current memtable full; waiting...\n");
       background_work_finished_signal_.Wait();
-    } else if (versions_->NumLevelFiles(0) >= config::kL0_StopWritesTrigger) {
+    ///////////meggie
+    }else if (nvmimm_ &&
+            nvmimm_->ApproximateMemoryUsage() >= options_.nvm_buffer_size) {
+      Log(options_.info_log, "Current nvm immutable full; waiting...\n");
+      background_work_finished_signal_.Wait();
+    ///////////meggie
+    }else if (versions_->NumLevelFiles(0) >= config::kL0_StopWritesTrigger) {
       // There are too many level-0 files.
       Log(options_.info_log, "Too many L0 files; waiting...\n");
       background_work_finished_signal_.Wait();
@@ -1593,16 +1638,17 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       log_ = new log::Writer(lfile);
       /////////////meggie
       //fprintf(stderr, "before MovetoNVMImmutable\n");
-      MovetoNVMImmutable();
+      //MovetoNVMImmutable();
       //fprintf(stderr, "after MovetoNVMImmutable\n");
-      //imm_ = mem_;
-      //has_imm_.Release_Store(imm_);
       /////////////meggie
+      imm_ = mem_;
+      has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
       //////////meggie
+      mem_->Ref();
       mem_->isNVMMemtable = false;
       //////////meggie
-      mem_->Ref();
+      //fprintf(stderr, "after convert memtable to immutable\n");
       force = false;   // Do not force another compaction if have room
       MaybeScheduleCompaction();
     }
