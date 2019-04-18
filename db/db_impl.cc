@@ -1860,6 +1860,7 @@ Status DestroyDB(const std::string& dbname, const Options& options,
         }
         else{ 
         /////////////////meggie
+            //fprintf(stderr, "ssd filenames:%s, delete\n", filenames[i].c_str());
             del = env->DeleteFile(dbname + "/" + filenames[i]);
         }
         if (result.ok() && !del.ok()) {
