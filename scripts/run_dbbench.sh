@@ -2,38 +2,31 @@
 #set -x
 
 NUMTHREAD=1
-#BENCHMARKS="customedworkloadzip099write,customedworkloadzip080write,\
-#customedworkloaduniformwrite,customedworkloadzip099_4kwrite,\
-#customedworkloadzip080_4kwrite,customedworkloaduniform_4kwrite,\
-#customedworkloadzip099writemid,customedworkloadzip080writemid,\
-#customedworkloaduniformwritemid,customedworkloadzip099_4kwritemid,\
-#customedworkloadzip080_4kwritemid,customedworkloaduniform_4kwritemid,\
-#customedworkloadzip099writelarge,\
-#customedworkloadzip080writelarge,\
-#customedworkloaduniformwritelarge,\
-#customedworkloadzip099_4kwritelarge,\
-#customedworkloadzip080_4kwritelarge,\
-#customedworkloaduniform_4kwritelarge"
+#BENCHMARKS="customed99hot1k_100k,\
+#customed80hot1k_100k,\
+#customeduniform1k_100k,\
+#customed99hot4k_100k,\
+#customed80hot4k_100k,\
+#customeduniform4k_100k"
+#customed99hot1k_500k,\
+#customed80hot1k_500k,\
+#customeduniform1k_500k,\
+#customed99hot4k_500k,\
+#customed80hot4k_500k,\
+#customeduniform4k_500k,\
 
-#BENCHMARKS="customedworkloadzip099write"
-#BENCHMARKS="customedworkloadzip080write"
-#BENCHMARKS="customedworkloaduniformwrite"
-#BENCHMARKS="customedworkloadzip099_4kwrite"
-#BENCHMARKS="customedworkloadzip080_4kwrite"
-#BENCHMARKS="customedworkloaduniform_4kwrite"
-#BENCHMARKS="customedworkloadzip099writemid"
-#BENCHMARKS="customedworkloadzip080writemid"
-#BENCHMARKS="customedworkloaduniformwritemid"
-#BENCHMARKS="customedworkloadzip099_4kwritemid"
-#BENCHMARKS="customedworkloadzip080_4kwritemid"
-BENCHMARKS="customedworkloaduniform_4kwritemid"
-
-#BENCHMARKS="customedworkloadzip099writelarge,\
-#customedworkloadzip080writelarge,\
-#customedworkloaduniformwritelarge,\
-#customedworkloadzip099_4kwritelarge,\
-#customedworkloadzip080_4kwritelarge,\
-#customedworkloaduniform_4kwritelarge"
+#BENCHMARKS="customed99hot1k_100k"
+#BENCHMARKS="customed80hot1k_100k"
+#BENCHMARKS="customeduniform1k_100k"
+#BENCHMARKS="customed99hot4k_100k"
+#BENCHMARKS="customed80hot4k_100k"
+#BENCHMARKS="customeduniform4k_100k"
+#BENCHMARKS="customed99hot1k_500k"
+#BENCHMARKS="customed80hot1k_500k"
+#BENCHMARKS="customeduniform1k_500k"
+#BENCHMARKS="customed99hot4k_500k"
+#BENCHMARKS="customed80hot4k_500k"
+BENCHMARKS="customeduniform4k_500k"
 
 #NoveLSM specific parameters
 #NoveLSM uses memtable levels, always set to num_levels 2

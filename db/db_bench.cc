@@ -666,60 +666,61 @@ class Benchmark {
       } else if (name == Slice("sstables")) {
         PrintStats("leveldb.sstables");
       ///////////////meggie
+      //////////hotspot
       ///////for 100K entries
       //////only write for 1KB value
-      } else if(name == Slice("customedworkloadzip099write")) {
+      } else if(name == Slice("customed99hot1k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip099Write;
-      } else if(name == Slice("customedworkloadzip080write")) {
+        method = &Benchmark::Customed99hot1k_100k;
+      } else if(name == Slice("customed80hot1k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip080Write;
-      } else if(name == Slice("customedworkloaduniformwrite")) {
+        method = &Benchmark::Customed80hot1k_100k;
+      } else if(name == Slice("customeduniform1k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadUniformWrite;
+        method = &Benchmark::CustomedWorkloadUniform1k_100k;
       ////only write for 4KB value
-      } else if(name == Slice("customedworkloadzip099_4kwrite")) {
+      } else if(name == Slice("customed99hot4k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip099_4KWrite;
-      } else if(name == Slice("customedworkloadzip080_4kwrite")) {
+        method = &Benchmark::Customed99hot4k_100k;
+      } else if(name == Slice("customed80hot4k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip080_4KWrite;
-      } else if(name == Slice("customedworkloaduniform_4kwrite")) {
+        method = &Benchmark::Customed80hot4k_100k;
+      } else if(name == Slice("customeduniform4k_100k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadUniform_4KWrite;
+        method = &Benchmark::CustomedWorkloadUniform4k_100k;
       /////////for 500K entries
       //////only write for 1KB value
-      } else if(name == Slice("customedworkloadzip099writemid")) {
+      } else if(name == Slice("customed99hot1k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip099WriteMid;
-      } else if(name == Slice("customedworkloadzip080writemid")) {
+        method = &Benchmark::Customed99hot1k_500k;
+      } else if(name == Slice("customed80hot1k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip080WriteMid;
-      } else if(name == Slice("customedworkloaduniformwritemid")) {
+        method = &Benchmark::Customed80hot1k_500k;
+      } else if(name == Slice("customeduniform1k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadUniformWriteMid;
+        method = &Benchmark::CustomedWorkloadUniform1k_500k;
       ////only write for 4KB value
-      } else if(name == Slice("customedworkloadzip099_4kwritemid")) {
+      } else if(name == Slice("customed99hot4k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip099_4KWriteMid;
-      } else if(name == Slice("customedworkloadzip080_4kwritemid")) {
+        method = &Benchmark::Customed99hot4k_500k;
+      } else if(name == Slice("customed80hot4k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadZip080_4KWriteMid;
-      } else if(name == Slice("customedworkloaduniform_4kwritemid")) {
+        method = &Benchmark::Customed80hot4k_500k;
+      } else if(name == Slice("customeduniform4k_500k")) {
         entries_per_batch_ = 1000;
         fresh_db = true;
-        method = &Benchmark::CustomedWorkloadUniform_4KWriteMid;
+        method = &Benchmark::CustomedWorkloadUniform4k_500k;
       /////////for 1000K entries
       //////////////meggie 
       } else {
@@ -1119,64 +1120,68 @@ class Benchmark {
   ////////for 100K entries 
   /////only write
   //for 1k
-  void CustomedWorkloadZip099Write(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite1k_100k.txt"; 
-      CustomedWorkloadWrite(thread, fname);
-  }
-  void CustomedWorkloadZip080Write(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite1k_100k.txt"; 
-      CustomedWorkloadWrite(thread, fname);
-  }
-  void CustomedWorkloadUniformWrite(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite1k_100k.txt"; 
+  void Customed99hot1k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite1k_100K.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
  
+  void Customed80hot1k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite1k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform1k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite1k_100k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
   ///for 4k
-  void CustomedWorkloadZip099_4KWrite(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite4k_100k.txt"; 
+  void Customed99hot4k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite4k_100K.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  void Customed80hot4k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite4k_100k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
 
-  void CustomedWorkloadZip080_4KWrite(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite4k_100k.txt"; 
-      CustomedWorkloadWrite(thread, fname);
-  }
-
-  void CustomedWorkloadUniform_4KWrite(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite4k_100k.txt"; 
+  void CustomedWorkloadUniform4k_100k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite4k_100k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
 
   ////////for 500K entries 
   /////only write
   //for 1k
-  void CustomedWorkloadZip099WriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite1k_500k.txt"; 
-      CustomedWorkloadWrite(thread, fname);
-  }
-  void CustomedWorkloadZip080WriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite1k_500k.txt"; 
-      CustomedWorkloadWrite(thread, fname);
-  }
-  void CustomedWorkloadUniformWriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite1k_500k.txt"; 
+  void Customed99hot1k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite1k_500K.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
  
-  //for 4k
-  void CustomedWorkloadZip099_4KWriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload099/runwrite4k_500k.txt"; 
+  void Customed80hot1k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite1k_500k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
 
-  void CustomedWorkloadZip080_4KWriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workload080/runwrite4k_500k.txt"; 
+  void CustomedWorkloadUniform1k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite1k_500k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
 
-  void CustomedWorkloadUniform_4KWriteMid(ThreadState* thread){
-      std::string fname = "/home/meggie/文档/workloads/workloaduniform/runwrite4k_500k.txt"; 
+  ///for 4k
+  void Customed99hot4k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite4k_500K.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  void Customed80hot4k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite4k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform4k_500k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite4k_500k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
 

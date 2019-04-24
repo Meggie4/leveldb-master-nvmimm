@@ -553,12 +553,33 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   WritableFile* file = nullptr;
   FileMetaData meta;
   int level = 0;
+  bool has_current_user_key = false;
+  std::string current_user_key;
+  SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
   iter->SeekToFirst();
+  int drop_count = 0;
   Status s;
   {
     mutex_.Unlock();
     if (iter->Valid()) {
       for(; iter->Valid(); iter->Next()){
+          Slice key = iter->key();
+          bool drop = false;
+          Slice user_key(key.data(), key.size() - 8);
+          if(!has_current_user_key ||
+                  user_comparator()->Compare(user_key, 
+                      Slice(current_user_key)) != 0){
+              current_user_key.assign(user_key.data(), user_key.size());
+              has_current_user_key = true;
+              last_sequence_for_key = kMaxSequenceNumber;
+          }
+          if(last_sequence_for_key < kMaxSequenceNumber){
+              drop = true;
+              //drop_count++;
+          }
+          
+          last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;
+
           if(!builder){
             meta.number = versions_->NewFileNumber();
             pending_outputs_.insert(meta.number);
@@ -569,32 +590,33 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
             }
             builder = new TableBuilder(options_, file);
           }
-          Slice key = iter->key();
-          if(builder->NumEntries() == 0){
-              meta.smallest.DecodeFrom(key);
-          }
-          meta.largest.DecodeFrom(key);
-          builder->Add(key, iter->value());
-          if(builder->FileSize() >= options_.write_buffer_size){
-              s = builder->Finish();
-              meta.file_size = builder->FileSize();
-              const Slice min_user_key = meta.smallest.user_key();
-              const Slice max_user_key = meta.largest.user_key();
-              if(!s.ok())
-                  break;
-              s = file->Sync();
-              if(s.ok())
-              s = file->Close();
-              delete builder;
-              builder = nullptr;
-              delete file;
-              file = nullptr;
-              if (base != nullptr) {
-                level = base->PickLevelForMemTableOutput(min_user_key, max_user_key);
+          if(!drop){
+              if(builder->NumEntries() == 0){
+                  meta.smallest.DecodeFrom(key);
               }
-              edit->AddFile(level, meta.number, meta.file_size,
-                  meta.smallest, meta.largest);
-              pending_outputs_.erase(meta.number);
+              meta.largest.DecodeFrom(key);
+              builder->Add(key, iter->value());
+              if(builder->FileSize() >= options_.write_buffer_size){
+                  s = builder->Finish();
+                  meta.file_size = builder->FileSize();
+                  const Slice min_user_key = meta.smallest.user_key();
+                  const Slice max_user_key = meta.largest.user_key();
+                  if(!s.ok())
+                      break;
+                  s = file->Sync();
+                  if(s.ok())
+                  s = file->Close();
+                  delete builder;
+                  builder = nullptr;
+                  delete file;
+                  file = nullptr;
+                  if (base != nullptr) {
+                    level = base->PickLevelForMemTableOutput(min_user_key, max_user_key);
+                  }
+                  edit->AddFile(level, meta.number, meta.file_size,
+                      meta.smallest, meta.largest);
+                  pending_outputs_.erase(meta.number);
+              }
           }
       }
       if(builder){
@@ -617,6 +639,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
             meta.smallest, meta.largest);
         pending_outputs_.erase(meta.number);
       }
+      //fprintf(stderr, "drop_count:%d\n", drop_count);
     }
     else{
       fprintf(stderr, "iter is not valid\n");
@@ -1545,15 +1568,38 @@ void DBImpl::MovetoNVMImmutable(){
     Iterator* iter = imm_->NewIterator();
     iter->SeekToFirst();
     size_t count = 0;
+    bool has_current_user_key = false;
+    std::string current_user_key;
+    SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
+    int drop_count = 0;
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
     for (; iter->Valid(); iter->Next()) {
-        nvmimm_->Add(iter->GetNodeKey());
-        count++;
+      Slice key = iter->key();
+      bool drop = false;
+      Slice user_key(key.data(), key.size() - 8);
+      if(!has_current_user_key ||
+              user_comparator()->Compare(user_key, 
+                  Slice(current_user_key)) != 0){
+          current_user_key.assign(user_key.data(), user_key.size());
+          has_current_user_key = true;
+          last_sequence_for_key = kMaxSequenceNumber;
+      }
+      if(last_sequence_for_key < kMaxSequenceNumber){
+          drop = true;
+          drop_count++;
+      }
+      
+      last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;
+      
+      if(!drop){
+         nvmimm_->Add(iter->GetNodeKey());
+         count++;
+      }
     }
-    Log(options_.info_log, "after MovetoNVMImmutable, nvm usage:%lu\n",  
-            nvmimm_->ApproximateMemoryUsage());
+    Log(options_.info_log, "after MovetoNVMImmutable, drop_count:%d, nvm usage:%lu\n", drop_count, nvmimm_->ApproximateMemoryUsage());
+
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);
