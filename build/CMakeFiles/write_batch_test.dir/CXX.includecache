@@ -41,6 +41,8 @@ string
 -
 unordered_set
 -
+util/debug.h
+../db/util/debug.h
 
 ..//db/skiplist.h
 assert.h
@@ -75,6 +77,8 @@ stdio.h
 -
 stdlib.h
 -
+util/debug.h
+../port/util/debug.h
 pmdk/src/include/libpmem.h
 ../port/pmdk/src/include/libpmem.h
 
@@ -145,6 +149,8 @@ leveldb/slice.h
 ../util/leveldb/slice.h
 port/port.h
 ../util/port/port.h
+
+..//util/debug.h
 
 ..//util/logging.h
 stdio.h

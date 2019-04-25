@@ -37,6 +37,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/leveldb.dir/util/status.cc.o"
   "CMakeFiles/leveldb.dir/util/BloomFilter.cc.o"
   "CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o"
+  "CMakeFiles/leveldb.dir/util/debug.cc.o"
   "CMakeFiles/leveldb.dir/util/env_posix.cc.o"
   "CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o"
   "libleveldb.pdb"

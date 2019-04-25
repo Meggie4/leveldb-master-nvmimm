@@ -14,6 +14,7 @@
 
 #include <string>
 #include <unordered_set>
+#include "util/debug.h"
 
 namespace leveldb {
 
@@ -57,6 +58,8 @@ public:
 	void Unref() {
 		--refs_;
 		assert(refs_ >= 0);
+        if(arena_nvm_)
+            DEBUG_T("refs:%d\n", refs_);
 		if (refs_ <= 0) {
 			delete this;
 		}

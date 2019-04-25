@@ -16,6 +16,7 @@ CMakeFiles/table_test.dir/table/table_test.cc.o: ../table/format.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/BloomFilter.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/arena.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/coding.h
+CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/debug.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/logging.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/random.h
 CMakeFiles/table_test.dir/table/table_test.cc.o: ../util/testharness.h

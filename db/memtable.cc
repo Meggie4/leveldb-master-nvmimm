@@ -14,7 +14,9 @@
 #include <gnuwrapper.h>
 #include <string>
 #include <unordered_set>
-
+///////////////meggie
+#include "util/debug.h"
+///////////////meggie
 
 namespace leveldb {
 
@@ -64,6 +66,7 @@ MemTable::MemTable(const InternalKeyComparator& cmp)
   arena_nvm_(nullptr),
   ////////////meggie
   table_(comparator_, &arena_) {
+      DEBUG_T("in new  MemTable\n");
 }
 
 MemTable::MemTable(const InternalKeyComparator& cmp, ArenaNVM& arena, bool recovery)
@@ -74,11 +77,19 @@ MemTable::MemTable(const InternalKeyComparator& cmp, ArenaNVM& arena, bool recov
   numkeys_(0),
   bloom_(BLOOMSIZE, BLOOMHASH),
   table_(comparator_, arena_nvm_, recovery){
+      DEBUG_T("in new nvm MemTable\n");
 }
 
 
 MemTable::~MemTable() {
     assert(refs_ == 0);
+    //////////meggie
+    DEBUG_T("in delete MemTable\n");
+    if(arena_nvm_){
+        DEBUG_T("delete nvm MemTable\n");
+        delete arena_nvm_;
+    }
+    //////////meggie
 }
 
 
@@ -197,7 +208,7 @@ void MemTable::Add(SequenceNumber s, ValueType type,
 
     if(arena_nvm_) {
         ArenaNVM* nvm_arena =(ArenaNVM*) arena_nvm_;
-        buf = nvm_arena->Allocate(encoded_len);
+        buf = nvm_arena->AllocateAlignedNVM(encoded_len);
     }else {
         buf = arena_.AllocateAligned(encoded_len);
     }
@@ -235,7 +246,7 @@ void MemTable::Add(SequenceNumber s, ValueType type,
           memcpy(p, value.data(), val_size);
     }
     assert((p + val_size) - buf == encoded_len);
-
+    
 #ifdef ENABLE_RECOVERY
     table_.Insert(buf, s);
 #else
@@ -260,22 +271,26 @@ void MemTable::Add(const char* kvitem){
         //fprintf(stderr, "kvlength:%lu\n", kvlength);
         buf = nvm_arena->AllocateAlignedNVM(kvlength);
     }else {
-        buf = arena_.Allocate(kvlength);
+        buf = arena_.AllocateAligned(kvlength);
     }
     if(!buf){
         perror("Memory allocation failed");
         exit(-1);
     }
     if (this->isNVMMemtable == true) {
+        //DEBUG_T("memcpy_persist, start\n"); 
         memcpy_persist(buf, kvitem, kvlength);
+        //DEBUG_T("memcpy_persist, end\n"); 
     }else{
         memcpy(buf, kvitem, kvlength);
     }
+    DEBUG_T("nvm immutable add, start\n"); 
 #ifdef ENABLE_RECOVERY
     table_.Insert(buf);
 #else
     table_.Insert(buf);
 #endif
+    DEBUG_T("nvm immutable add, end\n"); 
 }
 //////////////meggie
 

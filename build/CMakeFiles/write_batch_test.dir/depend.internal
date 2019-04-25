@@ -14,6 +14,7 @@ CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o
  ..//util/BloomFilter.h
  ..//util/arena.h
  ..//util/coding.h
+ ..//util/debug.h
  ..//util/logging.h
  ..//util/random.h
  ..//util/testharness.h

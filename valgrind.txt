@@ -1,0 +1,215 @@
+==15876== Memcheck, a memory error detector
+==15876== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==15876== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==15876== Command: /home/meggie/文档/leveldb-master-nvmimm/build/db_bench --threads=1 --benchmarks=customeduniform4k_500k --write_buffer_size=4 --nvm_buffer_size=200
+==15876== 
+LevelDB:    version 1.20
+Date:       Wed Apr 24 20:36:26 2019
+CPU:        4 * Intel(R) Core(TM) i3-4170 CPU @ 3.70GHz
+CPUCache:   3072 KB
+Keys:       16 bytes each
+Values:     1000 bytes each (500 bytes after compression)
+Entries:    100000
+RawSize:    96.9 MB (estimated)
+FileSize:   49.2 MB (estimated)
+WARNING: Optimization is disabled: benchmarks unnecessarily slow
+WARNING: Assertions are enabled; benchmarks unnecessarily slow
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+==15876== Warning: set address range perms: large range [0x395d8000, 0xb1771000) (defined)
+==15876== Warning: set address range perms: large range [0x90c4000, 0x1bcc4000) (defined)
+==15876== Thread 3:ops                              
+==15876== Invalid read of size 8
+==15876==    at 0x419FF2: std::vector<leveldb::FileMetaData*, std::allocator<leveldb::FileMetaData*> >::size() const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x431397: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==15876==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==15876==  Address 0x7f8ef88 is 0 bytes after a block of size 184 alloc'd
+==15876==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15876==    by 0x42F7E5: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x413228: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==15876==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x5945B83: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Use of uninitialised value of size 8
+==15876==    at 0x594276B: _itoa_word (_itoa.c:179)
+==15876==    by 0x594612C: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x5942775: _itoa_word (_itoa.c:179)
+==15876==    by 0x594612C: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x59461AF: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x5945C59: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x594641A: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x5945CAB: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Conditional jump or move depends on uninitialised value(s)
+==15876==    at 0x5945CE2: vfprintf (vfprintf.c:1631)
+==15876==    by 0x596EA48: vsnprintf (vsnprintf.c:114)
+==15876==    by 0x594D931: snprintf (snprintf.c:33)
+==15876==    by 0x431461: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41329F: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Warning: set address range perms: large range [0x1c4c4000, 0x2f0c4000) (defined)
+==15876== Warning: set address range perms: large range [0xb1771000, 0xc4371000) (defined)
+==15876== Invalid read of size 8
+==15876==    at 0x419FF2: std::vector<leveldb::FileMetaData*, std::allocator<leveldb::FileMetaData*> >::size() const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x431397: leveldb::VersionSet::LevelSummary(leveldb::VersionSet::LevelSummaryStorage*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x414CF3: leveldb::DBImpl::DoCompactionWork(leveldb::DBImpl::CompactionState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41337C: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==15876==  Address 0x84373e8 is 0 bytes after a block of size 184 alloc'd
+==15876==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15876==    by 0x42F7E5: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x414011: leveldb::DBImpl::InstallCompactionResults(leveldb::DBImpl::CompactionState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x414C7C: leveldb::DBImpl::DoCompactionWork(leveldb::DBImpl::CompactionState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x41337C: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412D10: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x412C6D: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449462: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x449051: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C1E7: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C0F1: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876==    by 0x44C081: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==15876== 
+==15876== Warning: set address range perms: large range [0xd5f54000, 0xe8b54000) (defined)
+==15876== Warning: set address range perms: large range [0xf3fe1000, 0x106be1000) (defined)
+==15876== Warning: set address range perms: large range [0x110e60000, 0x123a60000) (defined)
+==15876== Warning: set address range perms: large range [0x129ad5000, 0x13c6d5000) (defined)
+==15876== Warning: set address range perms: large range [0x144fa1000, 0x157ba1000) (defined)
+==15876== Warning: set address range perms: large range [0x165d1c000, 0x17891c000) (defined)
+==15876== Warning: set address range perms: large range [0x181b00000, 0x194700000) (defined)
+==15876== Warning: set address range perms: large range [0x395d8000, 0xb1771000) (noaccess)
+customeduniform4k_500k :    2116.084 micros/op;    1.8 MB/s, 2011440493B
+==15876== 
+==15876== HEAP SUMMARY:
+==15876==     in use at exit: 98,008 bytes in 293 blocks
+==15876==   total heap usage: 11,264,880 allocs, 11,264,587 frees, 22,412,782,357 bytes allocated
+==15876== 
+==15876== LEAK SUMMARY:
+==15876==    definitely lost: 17,656 bytes in 197 blocks
+==15876==    indirectly lost: 224 bytes in 13 blocks
+==15876==      possibly lost: 6,792 bytes in 79 blocks
+==15876==    still reachable: 73,336 bytes in 4 blocks
+==15876==         suppressed: 0 bytes in 0 blocks
+==15876== Rerun with --leak-check=full to see details of leaked memory
+==15876== 
+==15876== For counts of detected and suppressed errors, rerun with: -v
+==15876== Use --track-origins=yes to see where uninitialised values come from
+==15876== ERROR SUMMARY: 41159 errors from 10 contexts (suppressed: 0 from 0)
+

@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "util/debug.h"
 
 
 static const long kBlockSize = 4096;
@@ -36,7 +37,9 @@ Arena::~Arena() {
         if(this->nvmarena_ == true) {
             assert(i <= 0);
             assert(kSize != kBlockSize);
-            munmap(blocks_[i], kSize);
+            DEBUG_T("munmap,start\n");
+            munmap(blocks_[i], MEM_THRESH * kSize);
+            DEBUG_T("munmap, end\n");
         }
         else
             delete[] blocks_[i];
@@ -193,9 +196,11 @@ void* ArenaNVM::operator new[](size_t size) {
 }
 
 ArenaNVM::~ArenaNVM() {
+    DEBUG_T("delete ArenaNVM, blocks size:%d\n", blocks_.size());
     for (size_t i = 0; i < blocks_.size(); i++) {
 #ifdef ENABLE_RECOVERY
-        munmap(blocks_[i], kSize);
+        munmap(blocks_[i], MEM_THRESH * kSize);
+        DEBUG_T("munmap, end\n");
         blocks_[i] = NULL;
     }
     close(fd);
@@ -227,15 +232,25 @@ char* ArenaNVM::AllocateNVMBlock(size_t block_bytes) {
             return NULL;
     }
 
-    if(ftruncate(fd, MEM_THRESH * block_bytes) != 0){
+    size_t mmap_size = MEM_THRESH * block_bytes;
+    
+    if(ftruncate(fd, mmap_size) != 0){
         perror("ftruncate failed \n");
         return NULL;
     }
 
-    char *result = (char *)mmap(NULL, MEM_THRESH * block_bytes, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+    DEBUG_T("get mmap, start, block_bytes:%zu, mmap_size:%zu\n",
+            block_bytes, mmap_size);
+
+    char *result = (char *)mmap(NULL, mmap_size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+    DEBUG_T("get mmap, end,result:%p, mmap_size:%zu\n", 
+            result, mmap_size);
     //fprintf(stderr, "nvmarena size:%zd\n", block_bytes);
+    memset(result, 0, mmap_size);
+    DEBUG_T("after memset, end\n");
     allocation = true;
     blocks_.push_back(result);
+    DEBUG_T("after push_back, end\n");
     assert(blocks_.size() <= 1);
 #else
     char* result = new char[block_bytes];
@@ -254,7 +269,10 @@ char* ArenaNVM::AllocateFallbackNVM(size_t bytes) {
     memory_usage_.NoBarrier_Store(
             reinterpret_cast<void*>(MemoryUsage() + kSize + sizeof(char*)));
 #endif
-    alloc_bytes_remaining_ = kSize;
+    ////////////meggie
+    //alloc_bytes_remaining_ = kSize;
+    alloc_bytes_remaining_ = MEM_THRESH * kSize;
+    ////////////meggie
 
     char* result = alloc_ptr_;
     alloc_ptr_ += bytes;

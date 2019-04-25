@@ -13,6 +13,7 @@ CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../port/thread_annotat
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/BloomFilter.h
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/arena.h
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/coding.h
+CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/debug.h
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/logging.h
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/random.h
 CMakeFiles/write_batch_test.dir/db/write_batch_test.cc.o: ../util/testharness.h

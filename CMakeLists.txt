@@ -33,6 +33,9 @@ endif(ENABLE_RECOVERY)
 #    ADD_DEFINITIONS(-D_USE_ARENA2_ALLOC)
 #endif(_USE_ARENA2_ALLOC)
 ADD_DEFINITIONS(-std=c++11)
+#set(CMAKE_CXX_FLAGS "-g")
+#set(CMAKE_CXX_FLAGS "-Wall")
+#set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 ##############meggie
 
 include(TestBigEndian)
@@ -183,6 +186,8 @@ target_sources(leveldb
     "${PROJECT_SOURCE_DIR}/util/BloomFilter.h"
     "${PROJECT_SOURCE_DIR}/util/MurmurHash3.cc"
     "${PROJECT_SOURCE_DIR}/util/MurmurHash3.h"
+    "${PROJECT_SOURCE_DIR}/util/debug.cc"
+    "${PROJECT_SOURCE_DIR}/util/debug.h"
     ####################meggie
 
   # Only CMake 3.3+ supports PUBLIC sources in targets exported by "install".

@@ -3,10 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+////////////meggie 
+#include "util/debug.h"
+////////////meggie
 
 #ifdef _ENABLE_PMEMIO
 #include "pmdk/src/include/libpmem.h"
 #endif
+
 
 //Cacheline size
 //TODO: Make it configurable
@@ -42,21 +46,25 @@ static inline void flush_cache(const void *ptr, size_t size){
 }
 
 static inline void memcpy_persist
-                    (void *dest, const void *src, size_t size){
+                    (char *dest, const char *src, size_t size){
 
 #ifdef _ENABLE_PMEMIO
-  pmem_memcpy_persist(dest, (const void *)src, size);
+  pmem_memcpy_persist(dest, src, size);
 #else
   unsigned int  i=0;
-  uint64_t addr = (uint64_t)dest;
+  DEBUG_T("memcpy start, dest:%p, src:%p, size:%zu\n",
+          dest, src, size);
   memcpy(dest, src, size);
+  DEBUG_T("memcpy end\n");
 
+  uint64_t addr = (uint64_t)dest;
   mfence();
   for (i =0; i < size; i=i+CACHE_LINE_SIZE) {
     clflush((volatile char*)addr);
     addr += CACHE_LINE_SIZE;
   }
   mfence();
+  DEBUG_T("clflush end\n");
 #endif
 
 }

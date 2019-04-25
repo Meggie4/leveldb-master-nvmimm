@@ -236,9 +236,12 @@ SkipList<Key,Comparator>::NewNode(const Key& key, int height, bool head_alloc) {
     bool return_special = head_alloc && arena_->nvmarena_;
     if(arena_->nvmarena_) {
         ArenaNVM *nvm_arena = (ArenaNVM *)arena_;
-        if (head_alloc == true)
+        if (head_alloc == true){
+            DEBUG_T("node AllocateAlignedNVM, start\n");
             mem = nvm_arena->AllocateAlignedNVM(
                     sizeof(size_t) + sizeof (uint64_t) + sizeof(int) + sizeof(Node) + sizeof(port::AtomicPointer) * (height - 1));
+            DEBUG_T("node AllocateAlignedNVM, end\n");
+        }
         else
             mem = nvm_arena->AllocateAlignedNVM(
                     sizeof(Node) + sizeof(port::AtomicPointer) * (height - 1));
@@ -251,7 +254,9 @@ SkipList<Key,Comparator>::NewNode(const Key& key, int height, bool head_alloc) {
 #else
 #ifdef ENABLE_RECOVERY
     if (return_special) {
+        DEBUG_T("get offset_mem, start\n");
         char *offset_mem = mem + sizeof(size_t) + sizeof (uint64_t) + sizeof(int);
+        DEBUG_T("get offset_mem, end\n");
         return new (offset_mem) Node(key, mem);
     } else {
         return new (mem) Node(key, mem);
@@ -433,6 +438,7 @@ inline void SkipList<Key,Comparator>::Iterator::SetHead(void *ptr) {
           //head_(NewNode(0 /* any key will do */, kMaxHeight)),
           max_height_(reinterpret_cast<void*>(1)),
           rnd_(0xdeadbeef) {
+            DEBUG_T("SkipList, start\n");
 #ifdef ENABLE_RECOVERY
             if (recovery) {
                 ArenaNVM *arena_nvm = (ArenaNVM*) arena;
@@ -445,13 +451,18 @@ inline void SkipList<Key,Comparator>::Iterator::SetHead(void *ptr) {
             else
 #endif
 #ifdef ENABLE_RECOVERY
+            {
+                DEBUG_T("NewNode, start\n");
                 head_ = NewNode(0, kMaxHeight, true);
+                DEBUG_T("NewNode, end\n");
+            }
 #else
             head_ = NewNode(0, kMaxHeight, false);
 #endif
 
 #ifdef ENABLE_RECOVERY
             if (!recovery && arena->nvmarena_) {
+                DEBUG_T("ArenaNVM, init alloc_rem, start\n");
                 ArenaNVM *arena_nvm = (ArenaNVM*) arena;
                 alloc_rem = (size_t *)arena_nvm->getMapStart();
                 *alloc_rem = arena_->getAllocRem();
@@ -463,7 +474,12 @@ inline void SkipList<Key,Comparator>::Iterator::SetHead(void *ptr) {
 
                 m_height = (int *)((uint8_t*)arena_->getMapStart() + sizeof(size_t) + sizeof(uint64_t));
                 *m_height = GetMaxHeight();
-		flush_cache(m_height, CACHE_LINE_SIZE);
+		        flush_cache(m_height, CACHE_LINE_SIZE);
+                DEBUG_T("ArenaNVM init alloc_rem, end\n");
+            }
+            else{
+                DEBUG_T("Arena init alloc_rem, start\n");
+                DEBUG_T("Arena init alloc_rem, end\n");
             }
 #endif
 
@@ -476,6 +492,7 @@ inline void SkipList<Key,Comparator>::Iterator::SetHead(void *ptr) {
                     head_->SetNext(i, NULL);
                 }
             }
+            DEBUG_T("SkipList, end\n");
         }
 
 #ifdef ENABLE_RECOVERY

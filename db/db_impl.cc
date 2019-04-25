@@ -35,6 +35,8 @@
 #include "util/logging.h"
 #include "util/mutexlock.h"
 
+#include "util/debug.h"
+
 namespace leveldb {
 
 const int kNumNonTableCacheFiles = 10;
@@ -547,6 +549,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   //fprintf(stderr, "start\n");
   mutex_.AssertHeld();
   //fprintf(stderr, "is not AssertHeld\n");
+  //Log(options_.info_log, "Meggie, WriteImmutoLevel0, start\n");
   const uint64_t start_micros = env_->NowMicros();
   Iterator* iter = mem->NewIterator();
   TableBuilder* builder = nullptr;
@@ -646,6 +649,8 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
     }
     mutex_.Lock();
   }
+  delete iter;
+  //Log(options_.info_log, "Meggie, WriteImmutoLevel0, end\n");
   return s;
 }
 ////////////////meggie
@@ -720,6 +725,7 @@ void DBImpl::CompactNVMImmutable(){
 
   if (s.ok()) {
     // Commit to the new state
+    DEBUG_T("after Unref:\n");
     nvmimm_->Unref();
     nvmimm_ = nullptr;
     has_nvmimm_.Release_Store(nullptr);
@@ -1125,15 +1131,32 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
   std::string current_user_key;
   bool has_current_user_key = false;
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
+  ///////////////meggie
+  //Log(options_.info_log, "meggie, before scan input iterator\n");
+  ///////////////meggie
   for (; input->Valid() && !shutting_down_.Acquire_Load(); ) {
     // Prioritize immutable compaction work
+    //////////////meggie
+#if 0
+    Log(options_.info_log, "meggie, start scan input iterator\n");
+#endif 
+    //////////////meggie
     if (has_imm_.NoBarrier_Load() != nullptr) {
+#if 0
+      Log(options_.info_log, "meggie, before get NowMicros\n");
+#endif 
       const uint64_t imm_start = env_->NowMicros();
       mutex_.Lock();
       if (imm_ != nullptr) {
         /////////////meggie
         //CompactMemTable();
+#if 0
+        Log(options_.info_log, "meggie, before MovetoNVMImmutable\n");
+#endif 
         MovetoNVMImmutable();
+#if 0
+        Log(options_.info_log, "meggie, after MovetoNVMImmutable\n");
+#endif 
         /////////////meggie
         // Wake up MakeRoomForWrite() if necessary.
         background_work_finished_signal_.SignalAll();
@@ -1141,13 +1164,17 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
       mutex_.Unlock();
       imm_micros += (env_->NowMicros() - imm_start);
     }
-
+    //////////////meggie
+#if 0
+    Log(options_.info_log, "meggie, before get key\n");
+#endif 
+    //////////////meggie
     Slice key = input->key();
     if (compact->compaction->ShouldStopBefore(key) &&
         compact->builder != nullptr) {
       ///////////////meggie
-      Log(options_.info_log, "meggie, stopbefore, size:%lu\n",
-              compact->builder->FileSize());
+      //Log(options_.info_log, "meggie, stopbefore, size:%lu\n",
+       //       compact->builder->FileSize());
       ///////////////meggie
       status = FinishCompactionOutputFile(compact, input);
       if (!status.ok()) {
@@ -1218,8 +1245,8 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
       if (compact->builder->FileSize() >=
           compact->compaction->MaxOutputFileSize()) {
         ///////////////meggie
-        Log(options_.info_log, "meggie, big enough, size:%lu\n",
-              compact->builder->FileSize());
+        //Log(options_.info_log, "meggie, big enough, size:%lu\n",
+          //    compact->builder->FileSize());
         ///////////////meggie
         status = FinishCompactionOutputFile(compact, input);
         if (!status.ok()) {
@@ -1230,6 +1257,9 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
 
     input->Next();
   }
+  ///////////////meggie
+  //Log(options_.info_log, "meggie, FinishCompactionOutputFile\n");
+  ///////////////meggie
 
   if (status.ok() && shutting_down_.Acquire_Load()) {
     status = Status::IOError("Deleting DB during compaction");
@@ -1544,6 +1574,7 @@ WriteBatch* DBImpl::BuildBatchGroup(Writer** last_writer) {
 MemTable* DBImpl::CreateNVMImmutable(){
     MemTable* mem;
 #ifdef ENABLE_RECOVERY
+    //Log(options_.info_log, "Meggie, new ArenaNVM, start"); 
     uint64_t new_map_number = versions_->NewFileNumber();
     size_t size = 0;
     std::string filename = MapFileName(dbname_nvm_, new_map_number);
@@ -1553,7 +1584,9 @@ MemTable* DBImpl::CreateNVMImmutable(){
 #else
     ArenaNVM *arena= new ArenaNVM();
 #endif
+    //Log(options_.info_log, "Meggie, new MemTable, start"); 
     mem = new MemTable(internal_comparator_, *arena, false);
+    //Log(options_.info_log, "Meggie, new memtable, end"); 
     mem->isNVMMemtable = true;
     mem->Ref();
     assert(mem);
@@ -1561,10 +1594,15 @@ MemTable* DBImpl::CreateNVMImmutable(){
 }
 
 void DBImpl::MovetoNVMImmutable(){
+    //Log(options_.info_log, "Meggie, MovetoNVMImmutable, start"); 
     if(nvmimm_ == nullptr){
+        //Log(options_.info_log, "Meggie, CreateNVMImmutable, start"); 
         nvmimm_ = CreateNVMImmutable();
+        //Log(options_.info_log, "Meggie, CreateNVMImmutable, end"); 
         assert(nvmimm_ != nullptr);
     }
+    //Log(options_.info_log, "Meggie, MovetoNVMImmutable, start"); 
+    //Log(options_.info_log, "meggie, nvm_size:%zu\n", nvmimm_->ApproximateMemoryUsage());
     Iterator* iter = imm_->NewIterator();
     iter->SeekToFirst();
     size_t count = 0;
@@ -1599,7 +1637,7 @@ void DBImpl::MovetoNVMImmutable(){
       }
     }
     Log(options_.info_log, "after MovetoNVMImmutable, drop_count:%d, nvm usage:%lu\n", drop_count, nvmimm_->ApproximateMemoryUsage());
-
+    delete iter;
     VersionEdit edit;
     edit.SetPrevLogNumber(0);
     edit.SetLogNumber(logfile_number_);
@@ -1619,6 +1657,7 @@ void DBImpl::MovetoNVMImmutable(){
         assert(iter->key() == iter1->key());
     }*/
     //fprintf(stderr, "finished MovetoNVMImmutable\n");
+    //Log(options_.info_log, "Meggie, MovetoNVMImmutable, end\n");
 }
 //////////////////meggie
 

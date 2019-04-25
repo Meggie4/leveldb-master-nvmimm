@@ -2109,6 +2109,33 @@ util/crc32c_test.cc.s:
 	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/crc32c_test.cc.s
 .PHONY : util/crc32c_test.cc.s
 
+util/debug.o: util/debug.cc.o
+
+.PHONY : util/debug.o
+
+# target to build an object file
+util/debug.cc.o:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/debug.cc.o
+.PHONY : util/debug.cc.o
+
+util/debug.i: util/debug.cc.i
+
+.PHONY : util/debug.i
+
+# target to preprocess a source file
+util/debug.cc.i:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/debug.cc.i
+.PHONY : util/debug.cc.i
+
+util/debug.s: util/debug.cc.s
+
+.PHONY : util/debug.s
+
+# target to generate assembly for a file
+util/debug.cc.s:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/debug.cc.s
+.PHONY : util/debug.cc.s
+
 util/env.o: util/env.cc.o
 
 .PHONY : util/env.o
@@ -2924,6 +2951,9 @@ help:
 	@echo "... util/crc32c_test.o"
 	@echo "... util/crc32c_test.i"
 	@echo "... util/crc32c_test.s"
+	@echo "... util/debug.o"
+	@echo "... util/debug.i"
+	@echo "... util/debug.s"
 	@echo "... util/env.o"
 	@echo "... util/env.i"
 	@echo "... util/env.s"
