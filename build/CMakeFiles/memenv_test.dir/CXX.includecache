@@ -25,6 +25,8 @@ port/port.h
 ../db/port/port.h
 port/thread_annotations.h
 ../db/port/thread_annotations.h
+util/timer.h
+../db/util/timer.h
 
 ..//db/dbformat.h
 stdio.h
@@ -153,6 +155,14 @@ leveldb/slice.h
 ../util/leveldb/slice.h
 util/random.h
 ../util/util/random.h
+
+..//util/timer.h
+assert.h
+-
+leveldb/env.h
+../util/leveldb/env.h
+util/logging.h
+../util/util/logging.h
 
 ../include/leveldb/comparator.h
 string

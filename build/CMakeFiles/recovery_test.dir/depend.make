@@ -19,6 +19,7 @@ CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../util/logging.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../util/random.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../util/testharness.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../util/testutil.h
+CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../util/timer.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../include/leveldb/comparator.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../include/leveldb/db.h
 CMakeFiles/recovery_test.dir/db/recovery_test.cc.o: ../include/leveldb/env.h

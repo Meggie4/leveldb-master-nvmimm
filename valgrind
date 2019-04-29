@@ -1,230 +1,968 @@
-==23345== Memcheck, a memory error detector
-==23345== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
-==23345== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
-==23345== Command: /home/meggie/文档/leveldb-master-nvmimm/build/db_bench --threads=1 --benchmarks=customeduniform4k_500k --write_buffer_size=4 --nvm_buffer_size=200
-==23345== Parent PID: 3757
-==23345== 
---23345-- 
---23345-- Valgrind options:
---23345--    --verbose
---23345--    --log-file=valgrind
---23345--    --leak-check=full
---23345--    --show-leak-kinds=all
---23345-- Contents of /proc/version:
---23345--   Linux version 4.17.19 (root@meggie-All-Series) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4)) #1 SMP Fri Apr 12 16:50:45 CST 2019
---23345-- 
---23345-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---23345-- Page sizes: currently 4096, max supported 4096
---23345-- Valgrind library directory: /usr/lib/valgrind
---23345-- Reading syms from /home/meggie/文档/leveldb-master-nvmimm/build/db_bench
---23345-- Reading syms from /lib/x86_64-linux-gnu/ld-2.23.so
---23345--   Considering /lib/x86_64-linux-gnu/ld-2.23.so ..
---23345--   .. CRC mismatch (computed aa979a42 wanted 9019bbb7)
---23345--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.23.so ..
---23345--   .. CRC is valid
---23345-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---23345--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---23345--   .. CRC mismatch (computed eea41ea9 wanted 2009db78)
---23345--    object doesn't have a symbol table
---23345--    object doesn't have a dynamic symbol table
---23345-- Scheduler: using generic scheduler lock implementation.
---23345-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==23345== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-23345-by-root-on-???
-==23345== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-23345-by-root-on-???
-==23345== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-23345-by-root-on-???
-==23345== 
-==23345== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==23345== don't want to do, unless you know exactly what you're doing,
-==23345== or are doing some strange experiment):
-==23345==   /usr/lib/valgrind/../../bin/vgdb --pid=23345 ...command...
-==23345== 
-==23345== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==23345==   /path/to/gdb /home/meggie/文档/leveldb-master-nvmimm/build/db_bench
-==23345== and then give GDB the following command
-==23345==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=23345
-==23345== --pid is optional if only one valgrind process is running
-==23345== 
---23345-- REDIR: 0x401cfd0 (ld-linux-x86-64.so.2:strlen) redirected to 0x3809e181 (???)
---23345-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---23345--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---23345--   .. CRC mismatch (computed 2567ccf6 wanted 49420590)
---23345--    object doesn't have a symbol table
---23345-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---23345--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---23345--   .. CRC mismatch (computed 0e27c9a8 wanted ac585421)
---23345--    object doesn't have a symbol table
-==23345== WARNING: new redirection conflicts with existing -- ignoring it
---23345--     old: 0x0401cfd0 (strlen              ) R-> (0000.0) 0x3809e181 ???
---23345--     new: 0x0401cfd0 (strlen              ) R-> (2007.0) 0x04c31020 strlen
---23345-- REDIR: 0x401b920 (ld-linux-x86-64.so.2:index) redirected to 0x4c30bc0 (index)
---23345-- REDIR: 0x401bb40 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c320d0 (strcmp)
---23345-- REDIR: 0x401dd30 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c35270 (mempcpy)
---23345-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.23.so
---23345--   Considering /usr/lib/debug/.build-id/ce/17e023542265fc11d9bc8f534bb4f070493d30.debug ..
---23345--   .. build-id is valid
---23345-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
---23345--   Considering /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21 ..
---23345--   .. CRC mismatch (computed b2e7dc97 wanted c9833bdf)
---23345--    object doesn't have a symbol table
---23345-- Reading syms from /lib/x86_64-linux-gnu/libm-2.23.so
---23345--   Considering /lib/x86_64-linux-gnu/libm-2.23.so ..
---23345--   .. CRC mismatch (computed e8c3647b wanted c3efddac)
---23345--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.23.so ..
---23345--   .. CRC is valid
---23345-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
---23345--   Considering /lib/x86_64-linux-gnu/libgcc_s.so.1 ..
---23345--   .. CRC mismatch (computed b9a68419 wanted 29d51b00)
---23345--    object doesn't have a symbol table
---23345-- Reading syms from /lib/x86_64-linux-gnu/libc-2.23.so
---23345--   Considering /lib/x86_64-linux-gnu/libc-2.23.so ..
---23345--   .. CRC mismatch (computed 7a8ee3e4 wanted a5190ac4)
---23345--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.23.so ..
---23345--   .. CRC is valid
---23345-- REDIR: 0x5987a00 (libc.so.6:strcasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5983280 (libc.so.6:strcspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5989cf0 (libc.so.6:strncasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x59856f0 (libc.so.6:strpbrk) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5985a80 (libc.so.6:strspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x598714b (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5985400 (libc.so.6:rindex) redirected to 0x4c308a0 (rindex)
---23345-- REDIR: 0x597c130 (libc.so.6:malloc) redirected to 0x4c2db20 (malloc)
---23345-- REDIR: 0x5983720 (libc.so.6:strlen) redirected to 0x4c30f60 (strlen)
---23345-- REDIR: 0x5986bf0 (libc.so.6:__GI_memcmp) redirected to 0x4c33b90 (__GI_memcmp)
---23345-- REDIR: 0x5981cd0 (libc.so.6:strcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5997570 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c31f90 (strcmp)
---23345-- REDIR: 0x50e4e60 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c2e080 (operator new(unsigned long))
---23345-- REDIR: 0x50e2f10 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c2f1e0 (operator delete(void*))
---23345-- REDIR: 0x598e550 (libc.so.6:rawmemchr) redirected to 0x4c34dd0 (rawmemchr)
---23345-- REDIR: 0x5986bb0 (libc.so.6:bcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5a66430 (libc.so.6:__memcmp_sse4_1) redirected to 0x4c33cd0 (__memcmp_sse4_1)
---23345-- REDIR: 0x5983b70 (libc.so.6:__GI_strncmp) redirected to 0x4c31710 (__GI_strncmp)
---23345-- REDIR: 0x598c3f0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5a45ea0 (libc.so.6:__memcpy_avx_unaligned) redirected to 0x4c324a0 (memcpy@@GLIBC_2.14)
---23345-- REDIR: 0x598c470 (libc.so.6:__GI_memcpy) redirected to 0x4c32b00 (__GI_memcpy)
---23345-- REDIR: 0x5987890 (libc.so.6:__GI_stpcpy) redirected to 0x4c33f80 (__GI_stpcpy)
---23345-- REDIR: 0x59873b0 (libc.so.6:__GI_mempcpy) redirected to 0x4c34fa0 (__GI_mempcpy)
---23345-- REDIR: 0x50e4f10 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c2e7a0 (operator new[](unsigned long))
---23345-- REDIR: 0x50e2f40 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c2f6e0 (operator delete[](void*))
---23345-- REDIR: 0x5986ff0 (libc.so.6:__GI_memmove) redirected to 0x4c347e0 (__GI_memmove)
---23345-- REDIR: 0x597c4f0 (libc.so.6:free) redirected to 0x4c2ed80 (free)
---23345-- REDIR: 0x59871b0 (libc.so.6:memset) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5a6a970 (libc.so.6:__memset_avx2) redirected to 0x4c344c0 (memset)
---23345-- REDIR: 0x598e760 (libc.so.6:strchrnul) redirected to 0x4c34da0 (strchrnul)
---23345-- REDIR: 0x5986060 (libc.so.6:__GI_strstr) redirected to 0x4c354d0 (__strstr_sse2)
---23345-- REDIR: 0x59838c0 (libc.so.6:strnlen) redirected to 0x4c30ee0 (strnlen)
---23345-- REDIR: 0x5986860 (libc.so.6:memchr) redirected to 0x4c32170 (memchr)
---23345-- REDIR: 0x5981a80 (libc.so.6:index) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
---23345-- REDIR: 0x5981ab0 (libc.so.6:__GI_strchr) redirected to 0x4c30a00 (__GI_strchr)
---23345-- REDIR: 0x597cd10 (libc.so.6:calloc) redirected to 0x4c2faa0 (calloc)
-==23345== Warning: set address range perms: large range [0x395d8000, 0xb1771000) (defined)
---23345-- REDIR: 0x5a459b0 (libc.so.6:__memmove_avx_unaligned) redirected to 0x4c32230 (memcpy@GLIBC_2.2.5)
-==23345== Warning: set address range perms: large range [0x90c4000, 0x1bcc4000) (defined)
-==23345== Warning: set address range perms: large range [0x90c4000, 0x1bcc4000) (noaccess)
-==23345== Warning: set address range perms: large range [0x90c4000, 0x1bcc4000) (defined)
-==23345== Warning: set address range perms: large range [0x90c4000, 0x1bcc4000) (noaccess)
-==23345== Warning: set address range perms: large range [0x1c4c4000, 0x2f0c4000) (defined)
-==23345== Warning: set address range perms: large range [0x1c4c4000, 0x2f0c4000) (noaccess)
-==23345== Warning: set address range perms: large range [0x2415f000, 0x36d5f000) (defined)
-==23345== Warning: set address range perms: large range [0x2415f000, 0x36d5f000) (noaccess)
-==23345== Warning: set address range perms: large range [0xb2b8f000, 0xc578f000) (defined)
-==23345== Warning: set address range perms: large range [0xb2b8f000, 0xc578f000) (noaccess)
-==23345== Warning: set address range perms: large range [0xb2789000, 0xc5389000) (defined)
-==23345== Warning: set address range perms: large range [0xb2789000, 0xc5389000) (noaccess)
-==23345== Warning: set address range perms: large range [0xc7fcb000, 0xdabcb000) (defined)
-==23345== Warning: set address range perms: large range [0xc7fcb000, 0xdabcb000) (noaccess)
-==23345== Warning: set address range perms: large range [0xc7fcb000, 0xdabcb000) (defined)
-==23345== Warning: set address range perms: large range [0xc7fcb000, 0xdabcb000) (noaccess)
-==23345== Warning: set address range perms: large range [0xca800000, 0xdd400000) (defined)
-==23345== Warning: set address range perms: large range [0xca800000, 0xdd400000) (noaccess)
-==23345== Warning: set address range perms: large range [0xdea21000, 0xf1621000) (defined)
-==23345== Warning: set address range perms: large range [0x395d8000, 0xb1771000) (noaccess)
-==23345== Warning: set address range perms: large range [0xdea21000, 0xf1621000) (noaccess)
-==23345== 
-==23345== HEAP SUMMARY:
-==23345==     in use at exit: 73,624 bytes in 5 blocks
-==23345==   total heap usage: 6,440,427 allocs, 6,440,422 frees, 11,127,062,622 bytes allocated
-==23345== 
-==23345== Searching for pointers to 5 not-freed blocks
-==23345== Checked 8,509,408 bytes
-==23345== 
-==23345== 56 bytes in 1 blocks are still reachable in loss record 1 of 5
-==23345==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==23345==    by 0x44BCE7: __gnu_cxx::new_allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44BA9A: std::allocator_traits<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > >::allocate(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44B7ED: std::__allocated_ptr<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > > std::__allocate_guarded<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > >(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44B59C: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >*, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44B3DB: std::__shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44AF43: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >::shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44ABF1: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::allocate_shared<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44A5AD: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::make_shared<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449DD0: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::thread::_M_make_routine<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449774: std::thread::thread<void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*>(void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449317: leveldb::(anonymous namespace)::PosixEnv::Schedule(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345== 
-==23345== 64 bytes in 1 blocks are still reachable in loss record 2 of 5
-==23345==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==23345==    by 0x44B21B: __gnu_cxx::new_allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44ADFC: std::allocator_traits<std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*> >::allocate(std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44A9B5: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_allocate_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44A277: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_initialize_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449AEB: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_Deque_base() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449661: std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::deque() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x4491EA: leveldb::(anonymous namespace)::PosixEnv::PosixEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449911: leveldb::(anonymous namespace)::SingletonEnv<leveldb::(anonymous namespace)::PosixEnv>::SingletonEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449581: leveldb::Env::Default() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x4447F1: leveldb::Options::Options() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x40A1EE: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345== 
-==23345== 288 bytes in 1 blocks are possibly lost in loss record 3 of 5
-==23345==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==23345==    by 0x40138A4: allocate_dtv (dl-tls.c:322)
-==23345==    by 0x40138A4: _dl_allocate_tls (dl-tls.c:539)
-==23345==    by 0x4E4226E: allocate_stack (allocatestack.c:588)
-==23345==    by 0x4E4226E: pthread_create@@GLIBC_2.2.5 (pthread_create.c:539)
-==23345==    by 0x510FDC2: std::thread::_M_start_thread(std::shared_ptr<std::thread::_Impl_base>, void (*)()) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
-==23345==    by 0x44979F: std::thread::thread<void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*>(void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449317: leveldb::(anonymous namespace)::PosixEnv::Schedule(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x412C0D: leveldb::DBImpl::MaybeScheduleCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x416B1A: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x4158EA: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x409F10: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x409CCC: leveldb::Benchmark::CustomedWorkloadUniform4k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x40D614: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345== 
-==23345== 512 bytes in 1 blocks are still reachable in loss record 4 of 5
-==23345==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==23345==    by 0x44B509: __gnu_cxx::new_allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44B19A: std::allocator_traits<std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::allocate(std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44AD05: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_allocate_node() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44A6FF: void std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_push_back_aux<void (*&)(void*), void*&>(void (*&)(void*), void*&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449EFE: void std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::emplace_back<void (*&)(void*), void*&>(void (*&)(void*), void*&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44985A: void std::queue<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> > >::emplace<void (*&)(void*), void*&>(void (*&)(void*), void*&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x44936E: leveldb::(anonymous namespace)::PosixEnv::Schedule(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x412C0D: leveldb::DBImpl::MaybeScheduleCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x412CE3: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x412C29: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345==    by 0x449482: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
-==23345== 
-==23345== 72,704 bytes in 1 blocks are still reachable in loss record 5 of 5
-==23345==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==23345==    by 0x50E0EFF: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
-==23345==    by 0x40106B9: call_init.part.0 (dl-init.c:72)
-==23345==    by 0x40107CA: call_init (dl-init.c:30)
-==23345==    by 0x40107CA: _dl_init (dl-init.c:120)
-==23345==    by 0x4000C69: ??? (in /lib/x86_64-linux-gnu/ld-2.23.so)
-==23345==    by 0x4: ???
-==23345==    by 0xFFF0005FE: ???
-==23345==    by 0xFFF000637: ???
-==23345==    by 0xFFF000643: ???
-==23345==    by 0xFFF000667: ???
-==23345==    by 0xFFF00067D: ???
-==23345== 
-==23345== LEAK SUMMARY:
-==23345==    definitely lost: 0 bytes in 0 blocks
-==23345==    indirectly lost: 0 bytes in 0 blocks
-==23345==      possibly lost: 288 bytes in 1 blocks
-==23345==    still reachable: 73,336 bytes in 4 blocks
-==23345==         suppressed: 0 bytes in 0 blocks
-==23345== 
-==23345== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
-==23345== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==13589== Memcheck, a memory error detector
+==13589== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==13589== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==13589== Command: /home/meggie/文档/leveldb-master-nvmimm/build/db_bench --threads=1 --benchmarks=customeduniform1k_500k --write_buffer_size=4 --nvm_buffer_size=105
+==13589== Parent PID: 3190
+==13589== 
+--13589-- 
+--13589-- Valgrind options:
+--13589--    --verbose
+--13589--    --log-file=valgrind
+--13589--    --leak-check=full
+--13589--    --show-leak-kinds=all
+--13589-- Contents of /proc/version:
+--13589--   Linux version 4.17.19 (root@meggie-All-Series) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4)) #1 SMP Fri Apr 12 16:50:45 CST 2019
+--13589-- 
+--13589-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--13589-- Page sizes: currently 4096, max supported 4096
+--13589-- Valgrind library directory: /usr/lib/valgrind
+--13589-- Reading syms from /home/meggie/文档/leveldb-master-nvmimm/build/db_bench
+--13589-- Reading syms from /lib/x86_64-linux-gnu/ld-2.23.so
+--13589--   Considering /lib/x86_64-linux-gnu/ld-2.23.so ..
+--13589--   .. CRC mismatch (computed aa979a42 wanted 9019bbb7)
+--13589--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.23.so ..
+--13589--   .. CRC is valid
+--13589-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--13589--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--13589--   .. CRC mismatch (computed eea41ea9 wanted 2009db78)
+--13589--    object doesn't have a symbol table
+--13589--    object doesn't have a dynamic symbol table
+--13589-- Scheduler: using generic scheduler lock implementation.
+--13589-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==13589== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-13589-by-root-on-???
+==13589== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-13589-by-root-on-???
+==13589== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-13589-by-root-on-???
+==13589== 
+==13589== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==13589== don't want to do, unless you know exactly what you're doing,
+==13589== or are doing some strange experiment):
+==13589==   /usr/lib/valgrind/../../bin/vgdb --pid=13589 ...command...
+==13589== 
+==13589== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==13589==   /path/to/gdb /home/meggie/文档/leveldb-master-nvmimm/build/db_bench
+==13589== and then give GDB the following command
+==13589==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=13589
+==13589== --pid is optional if only one valgrind process is running
+==13589== 
+--13589-- REDIR: 0x401cfd0 (ld-linux-x86-64.so.2:strlen) redirected to 0x3809e181 (???)
+--13589-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--13589--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--13589--   .. CRC mismatch (computed 2567ccf6 wanted 49420590)
+--13589--    object doesn't have a symbol table
+--13589-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--13589--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--13589--   .. CRC mismatch (computed 0e27c9a8 wanted ac585421)
+--13589--    object doesn't have a symbol table
+==13589== WARNING: new redirection conflicts with existing -- ignoring it
+--13589--     old: 0x0401cfd0 (strlen              ) R-> (0000.0) 0x3809e181 ???
+--13589--     new: 0x0401cfd0 (strlen              ) R-> (2007.0) 0x04c31020 strlen
+--13589-- REDIR: 0x401b920 (ld-linux-x86-64.so.2:index) redirected to 0x4c30bc0 (index)
+--13589-- REDIR: 0x401bb40 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c320d0 (strcmp)
+--13589-- REDIR: 0x401dd30 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c35270 (mempcpy)
+--13589-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.23.so
+--13589--   Considering /usr/lib/debug/.build-id/ce/17e023542265fc11d9bc8f534bb4f070493d30.debug ..
+--13589--   .. build-id is valid
+--13589-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21
+--13589--   Considering /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21 ..
+--13589--   .. CRC mismatch (computed b2e7dc97 wanted c9833bdf)
+--13589--    object doesn't have a symbol table
+--13589-- Reading syms from /lib/x86_64-linux-gnu/libm-2.23.so
+--13589--   Considering /lib/x86_64-linux-gnu/libm-2.23.so ..
+--13589--   .. CRC mismatch (computed e8c3647b wanted c3efddac)
+--13589--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.23.so ..
+--13589--   .. CRC is valid
+--13589-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--13589--   Considering /lib/x86_64-linux-gnu/libgcc_s.so.1 ..
+--13589--   .. CRC mismatch (computed b9a68419 wanted 29d51b00)
+--13589--    object doesn't have a symbol table
+--13589-- Reading syms from /lib/x86_64-linux-gnu/libc-2.23.so
+--13589--   Considering /lib/x86_64-linux-gnu/libc-2.23.so ..
+--13589--   .. CRC mismatch (computed 7a8ee3e4 wanted a5190ac4)
+--13589--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.23.so ..
+--13589--   .. CRC is valid
+--13589-- REDIR: 0x5987a00 (libc.so.6:strcasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5983280 (libc.so.6:strcspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5989cf0 (libc.so.6:strncasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x59856f0 (libc.so.6:strpbrk) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5985a80 (libc.so.6:strspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x598714b (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5985400 (libc.so.6:rindex) redirected to 0x4c308a0 (rindex)
+--13589-- REDIR: 0x597c130 (libc.so.6:malloc) redirected to 0x4c2db20 (malloc)
+--13589-- REDIR: 0x5983720 (libc.so.6:strlen) redirected to 0x4c30f60 (strlen)
+--13589-- REDIR: 0x5986bf0 (libc.so.6:__GI_memcmp) redirected to 0x4c33b90 (__GI_memcmp)
+--13589-- REDIR: 0x5981cd0 (libc.so.6:strcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5997570 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c31f90 (strcmp)
+--13589-- REDIR: 0x50e4e60 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c2e080 (operator new(unsigned long))
+--13589-- REDIR: 0x50e2f10 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c2f1e0 (operator delete(void*))
+--13589-- REDIR: 0x598e550 (libc.so.6:rawmemchr) redirected to 0x4c34dd0 (rawmemchr)
+--13589-- REDIR: 0x5986bb0 (libc.so.6:bcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5a66430 (libc.so.6:__memcmp_sse4_1) redirected to 0x4c33cd0 (__memcmp_sse4_1)
+--13589-- REDIR: 0x5983b70 (libc.so.6:__GI_strncmp) redirected to 0x4c31710 (__GI_strncmp)
+--13589-- REDIR: 0x598c3f0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5a45ea0 (libc.so.6:__memcpy_avx_unaligned) redirected to 0x4c324a0 (memcpy@@GLIBC_2.14)
+--13589-- REDIR: 0x598c470 (libc.so.6:__GI_memcpy) redirected to 0x4c32b00 (__GI_memcpy)
+--13589-- REDIR: 0x5987890 (libc.so.6:__GI_stpcpy) redirected to 0x4c33f80 (__GI_stpcpy)
+--13589-- REDIR: 0x59873b0 (libc.so.6:__GI_mempcpy) redirected to 0x4c34fa0 (__GI_mempcpy)
+--13589-- REDIR: 0x50e4f10 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c2e7a0 (operator new[](unsigned long))
+--13589-- REDIR: 0x50e2f40 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c2f6e0 (operator delete[](void*))
+--13589-- REDIR: 0x5986ff0 (libc.so.6:__GI_memmove) redirected to 0x4c347e0 (__GI_memmove)
+--13589-- REDIR: 0x597c4f0 (libc.so.6:free) redirected to 0x4c2ed80 (free)
+--13589-- REDIR: 0x59871b0 (libc.so.6:memset) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5a6a970 (libc.so.6:__memset_avx2) redirected to 0x4c344c0 (memset)
+--13589-- REDIR: 0x598e760 (libc.so.6:strchrnul) redirected to 0x4c34da0 (strchrnul)
+--13589-- REDIR: 0x5986060 (libc.so.6:__GI_strstr) redirected to 0x4c354d0 (__strstr_sse2)
+--13589-- REDIR: 0x59838c0 (libc.so.6:strnlen) redirected to 0x4c30ee0 (strnlen)
+--13589-- REDIR: 0x5986860 (libc.so.6:memchr) redirected to 0x4c32170 (memchr)
+--13589-- REDIR: 0x5981a80 (libc.so.6:index) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--13589-- REDIR: 0x5981ab0 (libc.so.6:__GI_strchr) redirected to 0x4c30a00 (__GI_strchr)
+--13589-- REDIR: 0x597cd10 (libc.so.6:calloc) redirected to 0x4c2faa0 (calloc)
+==13589== Warning: set address range perms: large range [0x6cc3000, 0x257d9000) (defined)
+--13589-- REDIR: 0x5a459b0 (libc.so.6:__memmove_avx_unaligned) redirected to 0x4c32230 (memcpy@GLIBC_2.2.5)
+==13589== 
+==13589== Process terminating with default action of signal 7 (SIGBUS)
+==13589==  Non-existent physical address at address 0x26C5B000
+==13589==    at 0x4C3453F: memset (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4408DF: leveldb::ArenaNVM::AllocateNVMBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44098F: leveldb::ArenaNVM::AllocateFallbackNVM(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440BCA: leveldb::ArenaNVM::AllocateAlignedNVM(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42AB10: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::NewNode(char const* const&, int, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42A1B7: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::SkipList(leveldb::MemTable::KeyComparator, leveldb::Arena*, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x428D0D: leveldb::MemTable::MemTable(leveldb::InternalKeyComparator const&, leveldb::ArenaNVM&, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416A5E: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== HEAP SUMMARY:
+==13589==     in use at exit: 10,670,402 bytes in 4,012 blocks
+==13589==   total heap usage: 359,326 allocs, 355,314 frees, 294,157,736 bytes allocated
+==13589== 
+==13589== Searching for pointers to 4,012 not-freed blocks
+==13589== Checked 707,404,328 bytes
+==13589== 
+==13589== 8 bytes in 1 blocks are still reachable in loss record 1 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x441479: __gnu_cxx::new_allocator<char*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441355: std::allocator_traits<std::allocator<char*> >::allocate(std::allocator<char*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441223: std::_Vector_base<char*, std::allocator<char*> >::_M_allocate(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440E65: void std::vector<char*, std::allocator<char*> >::_M_emplace_back_aux<char* const&>(char* const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440D1C: std::vector<char*, std::allocator<char*> >::push_back(char* const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440371: leveldb::Arena::AllocateNewBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4401DD: leveldb::Arena::AllocateFallback(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4402F4: leveldb::Arena::AllocateAligned(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42AB79: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::NewNode(char const* const&, int, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42A1B7: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::SkipList(leveldb::MemTable::KeyComparator, leveldb::Arena*, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x428B58: leveldb::MemTable::MemTable(leveldb::InternalKeyComparator const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 16 bytes in 1 blocks are still reachable in loss record 2 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x449E90: leveldb::(anonymous namespace)::PosixEnv::NewLogger(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Logger**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40EEC6: leveldb::SanitizeOptions(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::InternalKeyComparator const*, leveldb::InternalFilterPolicy const*, leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F056: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 17 bytes in 1 blocks are still reachable in loss record 3 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40F0B0: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 17 bytes in 1 blocks are still reachable in loss record 4 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x42B8C3: leveldb::TableCache::TableCache(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Options const&, int) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F13A: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 17 bytes in 1 blocks are still reachable in loss record 5 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x430144: leveldb::VersionSet::VersionSet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Options const*, leveldb::TableCache*, leveldb::InternalKeyComparator const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F2B9: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 17 bytes in 1 blocks are still reachable in loss record 6 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5178AEC: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5178CD8: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::substr(unsigned long, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x448A62: leveldb::(anonymous namespace)::PosixWritableFile::Dirname(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44816C: leveldb::(anonymous namespace)::PosixWritableFile::PosixWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4492D8: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430856: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4183D1: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 17 bytes in 1 blocks are still reachable in loss record 7 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5178AEC: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5178CD8: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::substr(unsigned long, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x448A62: leveldb::(anonymous namespace)::PosixWritableFile::Dirname(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44816C: leveldb::(anonymous namespace)::PosixWritableFile::PosixWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4492D8: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4173FB: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 21 bytes in 1 blocks are still reachable in loss record 8 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40F0CA: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 22 bytes in 1 blocks are still reachable in loss record 9 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x450115: _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE9constructIS7_IRKS7_EEEvPT_DpOT0_ (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FEE3: _ZNSt16allocator_traitsISaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEE9constructIS6_IRKS6_EEEvRS8_PT_DpOT0_ (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FC0A: void std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_construct_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F89F: std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_create_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F2F2: std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node::operator()<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44EA1F: std::_Rb_tree_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_insert_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node>(std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44DFE6: std::pair<std::_Rb_tree_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, bool> std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_insert_unique<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44DAD7: std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::insert(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x448D4C: leveldb::(anonymous namespace)::PosixLockTable::Insert(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 22 bytes in 1 blocks are still reachable in loss record 10 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x449A24: leveldb::(anonymous namespace)::PosixEnv::LockFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::FileLock**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4105E5: leveldb::DBImpl::Recover(leveldb::VersionEdit*, bool*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41816E: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 28 bytes in 1 blocks are still reachable in loss record 11 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4492B7: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4173FB: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 12 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5177832: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40AFD0: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 13 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5177832: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40B039: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 14 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x517700A: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x419928: leveldb::Timer::init() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41985C: leveldb::Timer::Timer() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F356: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 15 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x517700A: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x41993F: leveldb::Timer::init() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41985C: leveldb::Timer::Timer() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F356: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 16 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x517700A: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x419956: leveldb::Timer::init() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41985C: leveldb::Timer::Timer() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F356: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 31 bytes in 1 blocks are still reachable in loss record 17 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x517700A: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40631B: leveldb::(anonymous namespace)::WorkloadGenerator::getData() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x406471: leveldb::(anonymous namespace)::WorkloadGenerator::getRequest(char*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A433: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589== 
+==13589== 32 bytes in 1 blocks are still reachable in loss record 18 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40F224: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 32 bytes in 1 blocks are still reachable in loss record 19 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x43089F: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4183D1: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 32 bytes in 1 blocks are still reachable in loss record 20 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4174D5: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==13589==    by 0x59FF41C: clone (clone.S:109)
+==13589== 
+==13589== 32 bytes in 1 blocks are still reachable in loss record 21 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x51763DE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51766E8: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x44053D: leveldb::ArenaNVM::ArenaNVM(long, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416A31: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x449F5D: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44D0F3: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 33 bytes in 1 blocks are still reachable in loss record 22 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4492B7: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430856: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4183D1: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 40 bytes in 1 blocks are still reachable in loss record 23 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x407128: leveldb::Benchmark::RunBenchmark(int, leveldb::Slice, void (leveldb::Benchmark::*)(leveldb::(anonymous namespace)::ThreadState*)) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DCDE: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 41 bytes in 1 blocks are still reachable in loss record 24 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5177832: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x41AB7E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4269C4: leveldb::MakeFileName(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, char const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x426B26: leveldb::MapFileName(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4169EE: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 48 bytes in 1 blocks are still reachable in loss record 25 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x449A32: leveldb::(anonymous namespace)::PosixEnv::LockFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::FileLock**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4105E5: leveldb::DBImpl::Recover(leveldb::VersionEdit*, bool*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41816E: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 51 bytes in 1 blocks are still reachable in loss record 26 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5178AEC: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5178C4B: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x409A10: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==13589==    by 0x59FF41C: clone (clone.S:109)
+==13589== 
+==13589== 51 bytes in 1 blocks are still reachable in loss record 27 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x409A2F: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==13589==    by 0x59FF41C: clone (clone.S:109)
+==13589== 
+==13589== 56 bytes in 1 blocks are still reachable in loss record 28 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40F117: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 56 bytes in 1 blocks are still reachable in loss record 29 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x450541: __gnu_cxx::new_allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> >::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4503D0: std::allocator_traits<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> > >::allocate(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> >&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450199: std::__allocated_ptr<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> > > std::__allocate_guarded<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> > >(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, (__gnu_cxx::_Lock_policy)2> >&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FF62: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, std::_Bind_simple<void (*(void*))(void*)> >(std::_Sp_make_shared_tag, std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >*, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > const&, std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FDBD: std::__shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, std::_Bind_simple<void (*(void*))(void*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > const&, std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FB13: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >::shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, std::_Bind_simple<void (*(void*))(void*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > const&, std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F73D: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > std::allocate_shared<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > >, std::_Bind_simple<void (*(void*))(void*)> >(std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > const&, std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F057: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > std::make_shared<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >, std::_Bind_simple<void (*(void*))(void*)> >(std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44E698: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> > > std::thread::_M_make_routine<std::_Bind_simple<void (*(void*))(void*)> >(std::_Bind_simple<void (*(void*))(void*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44DDAA: std::thread::thread<void (*&)(void*), void*&>(void (*&)(void*), void*&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A3AE: leveldb::(anonymous namespace)::PosixEnv::StartThread(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 56 bytes in 1 blocks are still reachable in loss record 30 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x44CBD3: __gnu_cxx::new_allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44C986: std::allocator_traits<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > >::allocate(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44C6D9: std::__allocated_ptr<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > > std::__allocate_guarded<std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> > >(std::allocator<std::_Sp_counted_ptr_inplace<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, (__gnu_cxx::_Lock_policy)2> >&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44C488: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >*, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44C2C7: std::__shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44BE2F: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >::shared_ptr<std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Sp_make_shared_tag, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44BADD: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::allocate_shared<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::allocator<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > const&, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44B499: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::make_shared<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >, std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44ACBC: std::shared_ptr<std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> > > std::thread::_M_make_routine<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >(std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A660: std::thread::thread<void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*>(void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A203: leveldb::(anonymous namespace)::PosixEnv::Schedule(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 64 bytes in 1 blocks are still reachable in loss record 31 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x44C107: __gnu_cxx::new_allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44BCE8: std::allocator_traits<std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*> >::allocate(std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44B8A1: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_allocate_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44B163: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_initialize_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A9D7: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_Deque_base() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A54D: std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::deque() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A0D6: leveldb::(anonymous namespace)::PosixEnv::PosixEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A7FD: leveldb::(anonymous namespace)::SingletonEnv<leveldb::(anonymous namespace)::PosixEnv>::SingletonEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A46D: leveldb::Env::Default() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4456DD: leveldb::Options::Options() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A7EA: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 64 bytes in 1 blocks are still reachable in loss record 32 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4500C7: __gnu_cxx::new_allocator<std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FEAB: std::allocator_traits<std::allocator<std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::allocate(std::allocator<std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44FB62: std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_get_node() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F879: std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_create_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44F2F2: std::_Rb_tree_node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >* std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node::operator()<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44EA1F: std::_Rb_tree_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_insert_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node>(std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_Alloc_node&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44DFE6: std::pair<std::_Rb_tree_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, bool> std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::_Identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_insert_unique<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44DAD7: std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::insert(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x448D4C: leveldb::(anonymous namespace)::PosixLockTable::Insert(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44990F: leveldb::(anonymous namespace)::PosixEnv::LockFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::FileLock**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4105E5: leveldb::DBImpl::Recover(leveldb::VersionEdit*, bool*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 64 bytes in 1 blocks are still reachable in loss record 33 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x422B05: __gnu_cxx::new_allocator<leveldb::DBImpl::Writer**>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42187A: std::allocator_traits<std::allocator<leveldb::DBImpl::Writer**> >::allocate(std::allocator<leveldb::DBImpl::Writer**>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42010D: std::_Deque_base<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::_M_allocate_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41DC89: std::_Deque_base<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::_M_initialize_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41BFF9: std::_Deque_base<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::_Deque_base() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41AF3F: std::deque<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::deque() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F21A: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 128 bytes in 1 blocks are still reachable in loss record 34 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4405AF: leveldb::ArenaNVM::operator new(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416A16: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x449F5D: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44D0F3: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CFFD: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CF8D: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 184 bytes in 1 blocks are still reachable in loss record 35 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4306B5: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x412A1C: leveldb::DBImpl::CompactNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41375A: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x449F5D: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44D0F3: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CFFD: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CF8D: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589== 
+==13589== 192 bytes in 1 blocks are still reachable in loss record 36 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x439117: __gnu_cxx::new_allocator<leveldb::FileMetaData*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x438845: std::allocator_traits<std::allocator<leveldb::FileMetaData*> >::allocate(std::allocator<leveldb::FileMetaData*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43766B: std::_Vector_base<leveldb::FileMetaData*, std::allocator<leveldb::FileMetaData*> >::_M_allocate(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x436569: leveldb::FileMetaData** std::vector<leveldb::FileMetaData*, std::allocator<leveldb::FileMetaData*> >::_M_allocate_and_copy<std::move_iterator<leveldb::FileMetaData**> >(unsigned long, std::move_iterator<leveldb::FileMetaData**>, std::move_iterator<leveldb::FileMetaData**>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4356E8: std::vector<leveldb::FileMetaData*, std::allocator<leveldb::FileMetaData*> >::reserve(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4350D2: leveldb::VersionSet::Builder::SaveTo(leveldb::Version*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43072A: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x412A1C: leveldb::DBImpl::CompactNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41375A: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 288 bytes in 1 blocks are possibly lost in loss record 37 of 67
+==13589==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40138A4: allocate_dtv (dl-tls.c:322)
+==13589==    by 0x40138A4: _dl_allocate_tls (dl-tls.c:539)
+==13589==    by 0x4E4226E: allocate_stack (allocatestack.c:588)
+==13589==    by 0x4E4226E: pthread_create@@GLIBC_2.2.5 (pthread_create.c:539)
+==13589==    by 0x510FDC2: std::thread::_M_start_thread(std::shared_ptr<std::thread::_Impl_base>, void (*)()) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x44DDD5: std::thread::thread<void (*&)(void*), void*&>(void (*&)(void*), void*&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A3AE: leveldb::(anonymous namespace)::PosixEnv::StartThread(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4072AB: leveldb::Benchmark::RunBenchmark(int, leveldb::Slice, void (leveldb::Benchmark::*)(leveldb::(anonymous namespace)::ThreadState*)) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DCDE: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 288 bytes in 1 blocks are possibly lost in loss record 38 of 67
+==13589==    at 0x4C2FB55: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40138A4: allocate_dtv (dl-tls.c:322)
+==13589==    by 0x40138A4: _dl_allocate_tls (dl-tls.c:539)
+==13589==    by 0x4E4226E: allocate_stack (allocatestack.c:588)
+==13589==    by 0x4E4226E: pthread_create@@GLIBC_2.2.5 (pthread_create.c:539)
+==13589==    by 0x510FDC2: std::thread::_M_start_thread(std::shared_ptr<std::thread::_Impl_base>, void (*)()) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x44A68B: std::thread::thread<void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*>(void (&)(leveldb::(anonymous namespace)::PosixEnv*), leveldb::(anonymous namespace)::PosixEnv*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A203: leveldb::(anonymous namespace)::PosixEnv::Schedule(void (*)(void*), void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41356D: leveldb::DBImpl::MaybeScheduleCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41758C: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 360 bytes in 1 blocks are still reachable in loss record 39 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x428A32: leveldb::MemTable::operator new(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416A3F: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x449F5D: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44D0F3: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CFFD: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CF8D: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 488 bytes in 1 blocks are still reachable in loss record 40 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40F282: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 512 bytes in 1 blocks are still reachable in loss record 41 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x44C3F5: __gnu_cxx::new_allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44C086: std::allocator_traits<std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::allocate(std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44BBF1: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_allocate_node() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44B91E: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_create_nodes(leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem**, leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44B1BC: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_M_initialize_map(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A9D7: std::_Deque_base<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::_Deque_base() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A54D: std::deque<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem, std::allocator<leveldb::(anonymous namespace)::PosixEnv::BackgroundWorkItem> >::deque() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A0D6: leveldb::(anonymous namespace)::PosixEnv::PosixEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A7FD: leveldb::(anonymous namespace)::SingletonEnv<leveldb::(anonymous namespace)::PosixEnv>::SingletonEnv() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A46D: leveldb::Env::Default() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4456DD: leveldb::Options::Options() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 512 bytes in 1 blocks are still reachable in loss record 42 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x42354F: __gnu_cxx::new_allocator<leveldb::DBImpl::Writer*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42285A: std::allocator_traits<std::allocator<leveldb::DBImpl::Writer*> >::allocate(std::allocator<leveldb::DBImpl::Writer*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42150F: std::_Deque_base<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::_M_allocate_node() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41F91D: void std::deque<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::_M_push_back_aux<leveldb::DBImpl::Writer*>(leveldb::DBImpl::Writer*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41D18A: void std::deque<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::emplace_back<leveldb::DBImpl::Writer*>(leveldb::DBImpl::Writer*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41B825: std::deque<leveldb::DBImpl::Writer*, std::allocator<leveldb::DBImpl::Writer*> >::push_back(leveldb::DBImpl::Writer*&&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4161B6: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 512 bytes in 16 blocks are still reachable in loss record 43 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x441EED: leveldb::(anonymous namespace)::HandleTable::Resize() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441C32: leveldb::(anonymous namespace)::HandleTable::HandleTable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4420CB: leveldb::(anonymous namespace)::LRUCache::LRUCache() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x442B31: leveldb::(anonymous namespace)::ShardedLRUCache::ShardedLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x442FEC: leveldb::NewLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40EF14: leveldb::SanitizeOptions(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::InternalKeyComparator const*, leveldb::InternalFilterPolicy const*, leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F056: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 512 bytes in 16 blocks are still reachable in loss record 44 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x441EED: leveldb::(anonymous namespace)::HandleTable::Resize() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441C32: leveldb::(anonymous namespace)::HandleTable::HandleTable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4420CB: leveldb::(anonymous namespace)::LRUCache::LRUCache() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x442B31: leveldb::(anonymous namespace)::ShardedLRUCache::ShardedLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x442FEC: leveldb::NewLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42B8DC: leveldb::TableCache::TableCache(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Options const&, int) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F13A: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 552 bytes in 1 blocks are still reachable in loss record 45 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5965CDC: __fopen_internal (iofopen.c:69)
+==13589==    by 0x449E54: leveldb::(anonymous namespace)::PosixEnv::NewLogger(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Logger**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40EEC6: leveldb::SanitizeOptions(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::InternalKeyComparator const*, leveldb::InternalFilterPolicy const*, leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F056: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 552 bytes in 1 blocks are still reachable in loss record 46 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5965CDC: __fopen_internal (iofopen.c:69)
+==13589==    by 0x510711F: std::__basic_file<char>::open(char const*, std::_Ios_Openmode, int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5147699: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x514852F: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x405FE8: leveldb::(anonymous namespace)::WorkloadGenerator::WorkloadGenerator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A3CE: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 720 bytes in 2 blocks are still reachable in loss record 47 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x428A32: leveldb::MemTable::operator new(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x417533: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==13589== 
+==13589== 763 bytes in 24 blocks are still reachable in loss record 48 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x41A0FC: leveldb::InternalKey::InternalKey(leveldb::InternalKey const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41A22E: leveldb::FileMetaData::FileMetaData(leveldb::FileMetaData const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x434E99: leveldb::VersionSet::Builder::Apply(leveldb::VersionEdit*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430711: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x412A1C: leveldb::DBImpl::CompactNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41375A: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 765 bytes in 24 blocks are still reachable in loss record 49 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x517896C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51789CE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x41A0FC: leveldb::InternalKey::InternalKey(leveldb::InternalKey const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41A213: leveldb::FileMetaData::FileMetaData(leveldb::FileMetaData const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x434E99: leveldb::VersionSet::Builder::Apply(leveldb::VersionEdit*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430711: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x412A1C: leveldb::DBImpl::CompactNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41375A: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 768 bytes in 1 blocks are still reachable in loss record 50 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4180F5: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 1,001 bytes in 1 blocks are still reachable in loss record 51 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x517700A: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40631B: leveldb::(anonymous namespace)::WorkloadGenerator::getData() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4064A3: leveldb::(anonymous namespace)::WorkloadGenerator::getRequest(char*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A433: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589== 
+==13589== 1,368 bytes in 1 blocks are still reachable in loss record 52 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4071F4: leveldb::Benchmark::RunBenchmark(int, leveldb::Slice, void (leveldb::Benchmark::*)(leveldb::(anonymous namespace)::ThreadState*)) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DCDE: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 2,112 bytes in 24 blocks are still reachable in loss record 53 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x434E8B: leveldb::VersionSet::Builder::Apply(leveldb::VersionEdit*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430711: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x412A1C: leveldb::DBImpl::CompactNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41375A: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41362C: leveldb::DBImpl::BackgroundCall() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x413589: leveldb::DBImpl::BGWork(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44A36E: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadMain() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x449F5D: leveldb::(anonymous namespace)::PosixEnv::BackgroundThreadEntryPoint(leveldb::(anonymous namespace)::PosixEnv*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44D0F3: void std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CFFD: std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44CF8D: std::thread::_Impl<std::_Bind_simple<void (*(leveldb::(anonymous namespace)::PosixEnv*))(leveldb::(anonymous namespace)::PosixEnv*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 3,520 bytes in 1 blocks are still reachable in loss record 54 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x442FDA: leveldb::NewLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40EF14: leveldb::SanitizeOptions(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::InternalKeyComparator const*, leveldb::InternalFilterPolicy const*, leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F056: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 3,520 bytes in 1 blocks are still reachable in loss record 55 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x442FDA: leveldb::NewLRUCache(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42B8DC: leveldb::TableCache::TableCache(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::Options const&, int) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40F13A: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 8,192 bytes in 1 blocks are still reachable in loss record 56 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5143467: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x51476B1: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x514852F: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x405FE8: leveldb::(anonymous namespace)::WorkloadGenerator::WorkloadGenerator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A3CE: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589== 
+==13589== 8,192 bytes in 2 blocks are still reachable in loss record 57 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x440356: leveldb::Arena::AllocateNewBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4401DD: leveldb::Arena::AllocateFallback(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4402F4: leveldb::Arena::AllocateAligned(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42AB79: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::NewNode(char const* const&, int, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42A1B7: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::SkipList(leveldb::MemTable::KeyComparator, leveldb::Arena*, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x428B58: leveldb::MemTable::MemTable(leveldb::InternalKeyComparator const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x417549: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 12,800 bytes in 1 blocks are still reachable in loss record 58 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x40F34B: leveldb::DBImpl::DBImpl(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x418118: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 32,768 bytes in 1 blocks are still reachable in loss record 59 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x441479: __gnu_cxx::new_allocator<char*>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441355: std::allocator_traits<std::allocator<char*> >::allocate(std::allocator<char*>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x441223: std::_Vector_base<char*, std::allocator<char*> >::_M_allocate(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440E65: void std::vector<char*, std::allocator<char*> >::_M_emplace_back_aux<char* const&>(char* const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440D1C: std::vector<char*, std::allocator<char*> >::push_back(char* const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x440371: leveldb::Arena::AllocateNewBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4401B7: leveldb::Arena::AllocateFallback(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4402F4: leveldb::Arena::AllocateAligned(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x429168: leveldb::MemTable::Add(unsigned long, leveldb::ValueType, leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AD7C: leveldb::(anonymous namespace)::MemTableInserter::Put(leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AA41: leveldb::WriteBatch::Iterate(leveldb::WriteBatch::Handler*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 65,624 bytes in 1 blocks are still reachable in loss record 60 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4492C5: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x430856: leveldb::VersionSet::LogAndApply(leveldb::VersionEdit*, leveldb::port::Mutex*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4183D1: leveldb::DB::Open(leveldb::Options const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::DB**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40E0D9: leveldb::Benchmark::Open() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DC98: leveldb::Benchmark::Run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40B06A: main (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 65,624 bytes in 1 blocks are still reachable in loss record 61 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x4492C5: leveldb::(anonymous namespace)::PosixEnv::NewWritableFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, leveldb::WritableFile**) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4173FB: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x4E416B9: start_thread (pthread_create.c:333)
+==13589== 
+==13589== 72,704 bytes in 1 blocks are still reachable in loss record 62 of 67
+==13589==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x50E0EFF: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x40106B9: call_init.part.0 (dl-init.c:72)
+==13589==    by 0x40107CA: call_init (dl-init.c:30)
+==13589==    by 0x40107CA: _dl_init (dl-init.c:120)
+==13589==    by 0x4000C69: ??? (in /lib/x86_64-linux-gnu/ld-2.23.so)
+==13589==    by 0x4: ???
+==13589==    by 0xFFF0005FE: ???
+==13589==    by 0xFFF000637: ???
+==13589==    by 0xFFF000643: ???
+==13589==    by 0xFFF000667: ???
+==13589==    by 0xFFF00067D: ???
+==13589== 
+==13589== 311,296 bytes in 76 blocks are still reachable in loss record 63 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x440356: leveldb::Arena::AllocateNewBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4401DD: leveldb::Arena::AllocateFallback(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4402F4: leveldb::Arena::AllocateAligned(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42AB79: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::NewNode(char const* const&, int, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x42A826: leveldb::SkipList<char const*, leveldb::MemTable::KeyComparator>::Insert(char const* const&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4292F3: leveldb::MemTable::Add(unsigned long, leveldb::ValueType, leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AD7C: leveldb::(anonymous namespace)::MemTableInserter::Put(leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AA41: leveldb::WriteBatch::Iterate(leveldb::WriteBatch::Handler*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AE9C: leveldb::WriteBatchInternal::InsertInto(leveldb::WriteBatch const*, leveldb::MemTable*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41645D: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 1,063,937 bytes in 1 blocks are still reachable in loss record 64 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x5176498: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x5177832: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589==    by 0x443435: leveldb::PutLengthPrefixedSlice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43ACBF: leveldb::WriteBatch::Put(leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A4BF: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450A37: void std::_Bind_simple<void (*(void*))(void*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x450941: std::_Bind_simple<void (*(void*))(void*)>::operator()() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4508D1: std::thread::_Impl<std::_Bind_simple<void (*(void*))(void*)> >::_M_run() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x510FC7F: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21)
+==13589== 
+==13589== 1,703,936 bytes in 1 blocks are still reachable in loss record 65 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x421E8B: __gnu_cxx::new_allocator<unsigned long>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x420C35: std::allocator_traits<std::allocator<unsigned long> >::allocate(std::allocator<unsigned long>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44696F: std::_Bvector_base<std::allocator<bool> >::_M_allocate(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4467CF: std::vector<bool, std::allocator<bool> >::_M_initialize(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4465D3: std::vector<bool, std::allocator<bool> >::vector(unsigned long, bool const&, std::allocator<bool> const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x446338: std::vector<bool, std::allocator<bool> >::vector(unsigned long, std::allocator<bool> const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x445B4B: BloomFilter::BloomFilter(unsigned long, unsigned char) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x428C7E: leveldb::MemTable::MemTable(leveldb::InternalKeyComparator const&, leveldb::ArenaNVM&, bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416A5E: leveldb::DBImpl::CreateNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x416B68: leveldb::DBImpl::MovetoNVMImmutable() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4136FA: leveldb::DBImpl::BackgroundCompaction() (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 3,407,872 bytes in 2 blocks are still reachable in loss record 66 of 67
+==13589==    at 0x4C2E0EF: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x421E8B: __gnu_cxx::new_allocator<unsigned long>::allocate(unsigned long, void const*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x420C35: std::allocator_traits<std::allocator<unsigned long> >::allocate(std::allocator<unsigned long>&, unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x44696F: std::_Bvector_base<std::allocator<bool> >::_M_allocate(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4467CF: std::vector<bool, std::allocator<bool> >::_M_initialize(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4465D3: std::vector<bool, std::allocator<bool> >::vector(unsigned long, bool const&, std::allocator<bool> const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x446338: std::vector<bool, std::allocator<bool> >::vector(unsigned long, std::allocator<bool> const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x445B4B: BloomFilter::BloomFilter(unsigned long, unsigned char) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x428ACF: leveldb::MemTable::MemTable(leveldb::InternalKeyComparator const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x417549: leveldb::DBImpl::MakeRoomForWrite(bool) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41624E: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== 3,896,700 bytes in 3,769 blocks are still reachable in loss record 67 of 67
+==13589==    at 0x4C2E80F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13589==    by 0x440356: leveldb::Arena::AllocateNewBlock(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4401B7: leveldb::Arena::AllocateFallback(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x4402F4: leveldb::Arena::AllocateAligned(unsigned long) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x429168: leveldb::MemTable::Add(unsigned long, leveldb::ValueType, leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AD7C: leveldb::(anonymous namespace)::MemTableInserter::Put(leveldb::Slice const&, leveldb::Slice const&) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AA41: leveldb::WriteBatch::Iterate(leveldb::WriteBatch::Handler*) const (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x43AE9C: leveldb::WriteBatchInternal::InsertInto(leveldb::WriteBatch const*, leveldb::MemTable*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x41645D: leveldb::DBImpl::Write(leveldb::WriteOptions const&, leveldb::WriteBatch*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40A50C: leveldb::Benchmark::CustomedWorkloadWrite(leveldb::(anonymous namespace)::ThreadState*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x409A46: leveldb::Benchmark::CustomedWorkloadUniform1k_500k(leveldb::(anonymous namespace)::ThreadState*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589==    by 0x40DED1: leveldb::Benchmark::ThreadBody(void*) (in /home/meggie/文档/leveldb-master-nvmimm/build/db_bench)
+==13589== 
+==13589== LEAK SUMMARY:
+==13589==    definitely lost: 0 bytes in 0 blocks
+==13589==    indirectly lost: 0 bytes in 0 blocks
+==13589==      possibly lost: 576 bytes in 2 blocks
+==13589==    still reachable: 10,669,826 bytes in 4,010 blocks
+==13589==         suppressed: 0 bytes in 0 blocks
+==13589== 
+==13589== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==13589== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

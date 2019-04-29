@@ -14,6 +14,7 @@
 #include "leveldb/env.h"
 #include "port/port.h"
 #include "port/thread_annotations.h"
+#include "util/timer.h"
 
 namespace leveldb {
 
@@ -138,9 +139,11 @@ class DBImpl : public DB {
   size_t nvmbuff_;
   uint64_t mapfile_number_;
   MemTable* CreateNVMImmutable();
+  virtual void PrintTimerAudit();
   void MovetoNVMImmutable();
   MemTable* nvmimm_ GUARDED_BY(mutex_); 
   port::AtomicPointer has_nvmimm_;      
+  Timer* timer;
   ////////////////meggie
 
   // table_cache_ provides its own synchronization

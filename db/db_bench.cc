@@ -722,6 +722,32 @@ class Benchmark {
         fresh_db = true;
         method = &Benchmark::CustomedWorkloadUniform4k_500k;
       /////////for 1000K entries
+      //////only write for 1KB value
+      } else if(name == Slice("customed99hot1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed99hot1k_1000k;
+      } else if(name == Slice("customed80hot1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed80hot1k_1000k;
+      } else if(name == Slice("customeduniform1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform1k_1000k;
+      ////only write for 4KB value
+      } else if(name == Slice("customed99hot4k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed99hot4k_1000k;
+      } else if(name == Slice("customed80hot4k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed80hot4k_1000k;
+      } else if(name == Slice("customeduniform4k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform4k_1000k;
       //////////////meggie 
       } else {
         if (name != Slice()) {  // No error message for empty name
@@ -745,6 +771,9 @@ class Benchmark {
       if (method != nullptr) {
         RunBenchmark(num_threads, name, method);
       }
+      ////////////meggie
+      db_->PrintTimerAudit();
+      ////////////meggie
     }
   }
 
@@ -1185,6 +1214,39 @@ class Benchmark {
       CustomedWorkloadWrite(thread, fname);
   }
 
+  ////////for 1000K entries 
+  /////only write
+  //for 1k
+  void Customed99hot1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  void Customed80hot1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  ///for 4k
+  void Customed99hot4k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot1_99/runwrite4k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+ 
+  void Customed80hot4k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/hot20_80/runwrite4k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
+  void CustomedWorkloadUniform4k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite4k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
   void CustomedWorkloadWrite(ThreadState* thread, std::string fname) {
     WriteBatch batch;
     Status s;

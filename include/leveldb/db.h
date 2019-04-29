@@ -147,6 +147,9 @@ class LEVELDB_EXPORT DB {
   // Therefore the following call will compact the entire database:
   //    db->CompactRange(nullptr, nullptr);
   virtual void CompactRange(const Slice* begin, const Slice* end) = 0;
+  //////////////meggie
+  virtual void PrintTimerAudit() = 0;
+  //////////////meggie
 };
 
 // Destroy the contents of the specified database.

@@ -19,6 +19,7 @@ CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../util/mutexl
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../util/random.h
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../util/testharness.h
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../util/testutil.h
+CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../util/timer.h
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../include/leveldb/cache.h
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../include/leveldb/comparator.h
 CMakeFiles/fault_injection_test.dir/db/fault_injection_test.cc.o: ../include/leveldb/db.h

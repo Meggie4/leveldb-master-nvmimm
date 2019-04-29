@@ -29,6 +29,8 @@ port/port.h
 ../db/port/port.h
 port/thread_annotations.h
 ../db/port/thread_annotations.h
+util/timer.h
+../db/util/timer.h
 
 ..//db/db_iter.h
 stdint.h
@@ -381,6 +383,14 @@ leveldb/env.h
 ..//util/random.h
 stdint.h
 -
+
+..//util/timer.h
+assert.h
+-
+leveldb/env.h
+../util/leveldb/env.h
+util/logging.h
+../util/util/logging.h
 
 ../include/leveldb/c.h
 stdarg.h

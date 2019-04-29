@@ -22,6 +22,7 @@ CMakeFiles/db_test.dir/db/db_test.cc.o
  ..//util/random.h
  ..//util/testharness.h
  ..//util/testutil.h
+ ..//util/timer.h
  ../include/leveldb/cache.h
  ../include/leveldb/comparator.h
  ../include/leveldb/db.h

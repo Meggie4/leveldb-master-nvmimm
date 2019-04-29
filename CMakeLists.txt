@@ -188,6 +188,7 @@ target_sources(leveldb
     "${PROJECT_SOURCE_DIR}/util/MurmurHash3.h"
     "${PROJECT_SOURCE_DIR}/util/debug.cc"
     "${PROJECT_SOURCE_DIR}/util/debug.h"
+    "${PROJECT_SOURCE_DIR}/util/timer.h"
     ####################meggie
 
   # Only CMake 3.3+ supports PUBLIC sources in targets exported by "install".

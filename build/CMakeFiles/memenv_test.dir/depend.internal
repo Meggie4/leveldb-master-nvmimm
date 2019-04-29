@@ -15,6 +15,7 @@ CMakeFiles/memenv_test.dir/helpers/memenv/memenv_test.cc.o
  ..//util/coding.h
  ..//util/logging.h
  ..//util/testharness.h
+ ..//util/timer.h
  ../include/leveldb/comparator.h
  ../include/leveldb/db.h
  ../include/leveldb/env.h

@@ -18,6 +18,7 @@ CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../util/logging.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../util/random.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../util/testharness.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../util/testutil.h
+CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../util/timer.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../include/leveldb/cache.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../include/leveldb/comparator.h
 CMakeFiles/corruption_test.dir/db/corruption_test.cc.o: ../include/leveldb/db.h

@@ -37,6 +37,15 @@
 
 #include "util/debug.h"
 
+////////////meggie
+#ifdef TIMER_LOG
+	#define start_timer(s) timer->StartTimer(s)
+	#define record_timer(s) timer->Record(s)
+#else
+	#define start_timer(s)
+	#define record_timer(s)
+#endif
+////////////meggie
 namespace leveldb {
 
 const int kNumNonTableCacheFiles = 10;
@@ -164,6 +173,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname,
   ///////////meggie
   nvmbuff_ = options_.nvm_buffer_size;
   has_nvmimm_.Release_Store(nullptr);
+  timer = new Timer();
   //fprintf(stderr, "nvmbuffsize:%lu\n", nvmbuff_);
   ///////////meggie
 }
@@ -186,6 +196,7 @@ DBImpl::~DBImpl() {
   if (imm_ != nullptr) imm_->Unref();
   ////////////meggie
   if (nvmimm_ != nullptr) nvmimm_->Unref();
+  delete timer;
   ////////////meggie
   delete tmp_batch_;
   delete log_;
@@ -550,6 +561,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   mutex_.AssertHeld();
   //fprintf(stderr, "is not AssertHeld\n");
   //Log(options_.info_log, "Meggie, WriteImmutoLevel0, start\n");
+  start_timer(WRITE_IMMU_TO_LEVEL0);
   const uint64_t start_micros = env_->NowMicros();
   Iterator* iter = mem->NewIterator();
   TableBuilder* builder = nullptr;
@@ -557,6 +569,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   FileMetaData meta;
   int level = 0;
   bool has_current_user_key = false;
+  
   std::string current_user_key;
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
   iter->SeekToFirst();
@@ -650,6 +663,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
     mutex_.Lock();
   }
   delete iter;
+  record_timer(WRITE_IMMU_TO_LEVEL0);
   //Log(options_.info_log, "Meggie, WriteImmutoLevel0, end\n");
   return s;
 }
@@ -1570,7 +1584,14 @@ WriteBatch* DBImpl::BuildBatchGroup(Writer** last_writer) {
   return result;
 }
 
-//////////////////meggie
+////////////////meggie
+void DBImpl::PrintTimerAudit(){
+    printf("--------timer information--------\n");
+    //timer->DebugString();
+    printf("%s\n", timer->DebugString().c_str());
+    printf("-----end timer information-------\n");
+}
+
 MemTable* DBImpl::CreateNVMImmutable(){
     MemTable* mem;
 #ifdef ENABLE_RECOVERY
@@ -1595,6 +1616,7 @@ MemTable* DBImpl::CreateNVMImmutable(){
 
 void DBImpl::MovetoNVMImmutable(){
     //Log(options_.info_log, "Meggie, MovetoNVMImmutable, start"); 
+    start_timer(TOTAL_MOVE_TO_NVMTABLE);
     if(nvmimm_ == nullptr){
         //Log(options_.info_log, "Meggie, CreateNVMImmutable, start"); 
         nvmimm_ = CreateNVMImmutable();
@@ -1613,6 +1635,7 @@ void DBImpl::MovetoNVMImmutable(){
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
+    start_timer(GET_IMMUTABLE_BATCHES);
     for (; iter->Valid(); iter->Next()) {
       Slice key = iter->key();
       bool drop = false;
@@ -1636,6 +1659,7 @@ void DBImpl::MovetoNVMImmutable(){
          count++;
       }
     }
+    record_timer(GET_IMMUTABLE_BATCHES);
     Log(options_.info_log, "after MovetoNVMImmutable, drop_count:%d, nvm usage:%lu\n", drop_count, nvmimm_->ApproximateMemoryUsage());
     delete iter;
     VersionEdit edit;
@@ -1658,6 +1682,7 @@ void DBImpl::MovetoNVMImmutable(){
     }*/
     //fprintf(stderr, "finished MovetoNVMImmutable\n");
     //Log(options_.info_log, "Meggie, MovetoNVMImmutable, end\n");
+    record_timer(TOTAL_MOVE_TO_NVMTABLE);
 }
 //////////////////meggie
 

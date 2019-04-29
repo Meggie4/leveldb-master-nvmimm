@@ -20,6 +20,7 @@ CMakeFiles/recovery_test.dir/db/recovery_test.cc.o
  ..//util/random.h
  ..//util/testharness.h
  ..//util/testutil.h
+ ..//util/timer.h
  ../include/leveldb/comparator.h
  ../include/leveldb/db.h
  ../include/leveldb/env.h

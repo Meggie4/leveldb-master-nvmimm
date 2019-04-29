@@ -2073,6 +2073,11 @@ class ModelDB: public DB {
   virtual void CompactRange(const Slice* start, const Slice* end) {
   }
 
+  /////////////////////meggie
+  virtual void PrintTimerAudit() {
+
+  }
+  /////////////////////meggie
  private:
   class ModelIter: public Iterator {
    public:

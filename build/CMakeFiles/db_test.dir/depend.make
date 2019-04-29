@@ -21,6 +21,7 @@ CMakeFiles/db_test.dir/db/db_test.cc.o: ../util/mutexlock.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../util/random.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../util/testharness.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../util/testutil.h
+CMakeFiles/db_test.dir/db/db_test.cc.o: ../util/timer.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../include/leveldb/cache.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../include/leveldb/comparator.h
 CMakeFiles/db_test.dir/db/db_test.cc.o: ../include/leveldb/db.h

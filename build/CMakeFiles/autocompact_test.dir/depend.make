@@ -15,6 +15,7 @@ CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../util/logging.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../util/random.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../util/testharness.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../util/testutil.h
+CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../util/timer.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../include/leveldb/cache.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../include/leveldb/comparator.h
 CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o: ../include/leveldb/db.h
