@@ -568,12 +568,11 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   WritableFile* file = nullptr;
   FileMetaData meta;
   int level = 0;
-  bool has_current_user_key = false;
-  
+  /*bool has_current_user_key = false;
   std::string current_user_key;
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
+  int drop_count = 0;*/
   iter->SeekToFirst();
-  int drop_count = 0;
   Status s;
   {
     mutex_.Unlock();
@@ -582,7 +581,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
           Slice key = iter->key();
           bool drop = false;
           Slice user_key(key.data(), key.size() - 8);
-          if(!has_current_user_key ||
+          /*if(!has_current_user_key ||
                   user_comparator()->Compare(user_key, 
                       Slice(current_user_key)) != 0){
               current_user_key.assign(user_key.data(), user_key.size());
@@ -595,7 +594,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
           }
           
           last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;
-
+*/
           if(!builder){
             meta.number = versions_->NewFileNumber();
             pending_outputs_.insert(meta.number);
@@ -1627,11 +1626,11 @@ void DBImpl::MovetoNVMImmutable(){
     //Log(options_.info_log, "meggie, nvm_size:%zu\n", nvmimm_->ApproximateMemoryUsage());
     Iterator* iter = imm_->NewIterator();
     iter->SeekToFirst();
-    size_t count = 0;
+    /*size_t count = 0;
     bool has_current_user_key = false;
     std::string current_user_key;
     SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
-    int drop_count = 0;
+    int drop_count = 0;*/
     if(!iter->Valid()){
         fprintf(stderr, "mem Iterator is unvalid\n");
     }
@@ -1640,7 +1639,7 @@ void DBImpl::MovetoNVMImmutable(){
       Slice key = iter->key();
       bool drop = false;
       Slice user_key(key.data(), key.size() - 8);
-      if(!has_current_user_key ||
+      /*if(!has_current_user_key ||
               user_comparator()->Compare(user_key, 
                   Slice(current_user_key)) != 0){
           current_user_key.assign(user_key.data(), user_key.size());
@@ -1652,15 +1651,15 @@ void DBImpl::MovetoNVMImmutable(){
           drop_count++;
       }
       
-      last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;
+      last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;*/
       
       if(!drop){
          nvmimm_->Add(iter->GetNodeKey());
-         count++;
+         //count++;
       }
     }
     record_timer(GET_IMMUTABLE_BATCHES);
-    Log(options_.info_log, "after MovetoNVMImmutable, drop_count:%d, nvm usage:%lu\n", drop_count, nvmimm_->ApproximateMemoryUsage());
+    Log(options_.info_log, "after MovetoNVMImmutable, nvm usage:%lu\n", nvmimm_->ApproximateMemoryUsage());
     delete iter;
     VersionEdit edit;
     edit.SetPrevLogNumber(0);

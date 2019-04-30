@@ -666,6 +666,56 @@ class Benchmark {
       } else if (name == Slice("sstables")) {
         PrintStats("leveldb.sstables");
       ///////////////meggie
+      /////for zipfian1.2
+      //////for load 
+      } else if(name == Slice("loadzip1k_500k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Loadzip1k_500k;
+      } else if(name == Slice("loadzip1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Loadzip1k_1000k;
+      } else if(name == Slice("loadzip1k_2000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Loadzip1k_2000k;
+      //////for read 
+      } else if(name == Slice("readzip1k_500k")) {
+        method = &Benchmark::Readzip1k_500k;
+      } else if(name == Slice("readzip1k_1000k")) {
+        method = &Benchmark::Readzip1k_1000k;
+      } else if(name == Slice("readzip1k_2000k")) {
+        method = &Benchmark::Readzip1k_2000k;
+      ///for write 
+      ////for zipfian
+      ///for 1KB value
+      } else if(name == Slice("customedzip1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customedzip1k_1000k;
+      } else if(name == Slice("customedzip1k_2000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customedzip1k_2000k;
+      } else if(name == Slice("customedzip1k_3000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customedzip1k_3000k;
+      ////for zipfian1.2
+      ///for 1KB value
+      } else if(name == Slice("customed12zip1k_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed12zip1k_1000k;
+      } else if(name == Slice("customed12zip1k_2000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed12zip1k_2000k;
+      } else if(name == Slice("customed12zip1k_3000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::Customed12zip1k_3000k;
       //////////hotspot
       ///////for 100K entries
       //////only write for 1KB value
@@ -748,6 +798,19 @@ class Benchmark {
         entries_per_batch_ = 1000;
         fresh_db = true;
         method = &Benchmark::CustomedWorkloadUniform4k_1000k;
+      //////////for 256B
+      } else if(name == Slice("customeduniform256_1000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform256_1000k;
+      } else if(name == Slice("customeduniform256_5000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform256_5000k;
+      } else if(name == Slice("customeduniform256_10000k")) {
+        entries_per_batch_ = 1000;
+        fresh_db = true;
+        method = &Benchmark::CustomedWorkloadUniform256_10000k;
       //////////////meggie 
       } else {
         if (name != Slice()) {  // No error message for empty name
@@ -1146,6 +1209,86 @@ class Benchmark {
     }
   }
   //////////////meggie
+  //////////Read 
+  ///////zipfian1.2
+  //////////load 
+  void Loadzip1k_500k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runload1k_500k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Loadzip1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runload1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Loadzip1k_2000k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runload1k_2000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  //////read
+  void Readzip1k_500k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runread1k_500k.txt"; 
+      CustomedWorkloadRead(thread, fname);
+  }
+  void Readzip1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runread1k_1000k.txt"; 
+      CustomedWorkloadRead(thread, fname);
+  }
+  void Readzip1k_2000k(ThreadState* thread){
+      std::string fname = "/mnt/readworkloads/workloadzip1.2/runread1k_2000k.txt"; 
+      CustomedWorkloadRead(thread, fname);
+  }
+
+  void CustomedWorkloadRead(ThreadState* thread, std::string fname) {
+      leveldb::WorkloadGenerator wlgnerator(fname);
+      char type;
+      std::string key;
+      std::string value;
+      int found = 0;
+      ReadOptions options;
+      std::string read_value;
+      while(wlgnerator.getRequest(&type, key, value).ok()){
+        if(db_->Get(options, key, &read_value).ok()) {
+            found++;
+        }
+        thread->stats.FinishedSingleOp();
+        break;
+      }
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%d found)", found);
+      thread->stats.AddMessage(msg);
+  } 
+  
+  ///////////write
+  ////for zipfian 
+  //for 1KB value
+  void Customedzip1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip/runwrite1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Customedzip1k_2000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip/runwrite1k_2000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Customedzip1k_3000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip/runwrite1k_3000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  
+  ////for zipfian1.2
+  //for 1KB value
+  void Customed12zip1k_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip1.2/runwrite1k_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Customed12zip1k_2000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip1.2/runwrite1k_2000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void Customed12zip1k_3000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloadzip1.2/runwrite1k_3000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  ///for hotspot
   ////////for 100K entries 
   /////only write
   //for 1k
@@ -1247,6 +1390,20 @@ class Benchmark {
       std::string fname = "/mnt/workloads/workloaduniform/runwrite4k_1000k.txt"; 
       CustomedWorkloadWrite(thread, fname);
   }
+  //////////for 256B
+  void CustomedWorkloadUniform256_1000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite256_1000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadUniform256_5000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite256_5000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+  void CustomedWorkloadUniform256_10000k(ThreadState* thread){
+      std::string fname = "/mnt/workloads/workloaduniform/runwrite256_10000k.txt"; 
+      CustomedWorkloadWrite(thread, fname);
+  }
+
   void CustomedWorkloadWrite(ThreadState* thread, std::string fname) {
     WriteBatch batch;
     Status s;
