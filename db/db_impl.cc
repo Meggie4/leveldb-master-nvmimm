@@ -568,10 +568,10 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
   WritableFile* file = nullptr;
   FileMetaData meta;
   int level = 0;
-  /*bool has_current_user_key = false;
+  bool has_current_user_key = false;
   std::string current_user_key;
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
-  int drop_count = 0;*/
+  int drop_count = 0;
   iter->SeekToFirst();
   Status s;
   {
@@ -581,7 +581,7 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
           Slice key = iter->key();
           bool drop = false;
           Slice user_key(key.data(), key.size() - 8);
-          /*if(!has_current_user_key ||
+          if(!has_current_user_key ||
                   user_comparator()->Compare(user_key, 
                       Slice(current_user_key)) != 0){
               current_user_key.assign(user_key.data(), user_key.size());
@@ -594,7 +594,6 @@ Status DBImpl::WriteImmutoLevel0(MemTable* mem, VersionEdit* edit,
           }
           
           last_sequence_for_key =  DecodeFixed64(key.data() + key.size() - 8) >> 8;
-*/
           if(!builder){
             meta.number = versions_->NewFileNumber();
             pending_outputs_.insert(meta.number);
@@ -1406,7 +1405,14 @@ Status DBImpl::Get(const ReadOptions& options,
       // Done
     } else if (imm != nullptr && imm->Get(lkey, value, &s)) {
       // Done
-    } else {
+    } 
+    ////////////meggie 
+    else if(nvmimm_ != nullptr && nvmimm_->Get(lkey, value, &s)){
+      //Done 
+      DEBUG_T("get key from nvmimm_\n");
+    }
+    ////////////meggie 
+    else {
       s = current->Get(options, lkey, value, &stats);
       have_stat_update = true;
     }

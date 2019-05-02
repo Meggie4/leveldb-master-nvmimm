@@ -52,10 +52,7 @@ static inline void memcpy_persist
   pmem_memcpy_persist(dest, src, size);
 #else
   unsigned int  i=0;
-  DEBUG_T("memcpy start, dest:%p, src:%p, size:%zu\n",
-          dest, src, size);
   memcpy(dest, src, size);
-  DEBUG_T("memcpy end\n");
 
   uint64_t addr = (uint64_t)dest;
   mfence();
@@ -64,7 +61,6 @@ static inline void memcpy_persist
     addr += CACHE_LINE_SIZE;
   }
   mfence();
-  DEBUG_T("clflush end\n");
 #endif
 
 }

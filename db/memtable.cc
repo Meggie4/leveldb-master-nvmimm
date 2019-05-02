@@ -66,7 +66,6 @@ MemTable::MemTable(const InternalKeyComparator& cmp)
   arena_nvm_(nullptr),
   ////////////meggie
   table_(comparator_, &arena_) {
-      DEBUG_T("in new  MemTable\n");
 }
 
 MemTable::MemTable(const InternalKeyComparator& cmp, ArenaNVM& arena, bool recovery)
@@ -77,16 +76,13 @@ MemTable::MemTable(const InternalKeyComparator& cmp, ArenaNVM& arena, bool recov
   numkeys_(0),
   bloom_(BLOOMSIZE, BLOOMHASH),
   table_(comparator_, arena_nvm_, recovery){
-      DEBUG_T("in new nvm MemTable\n");
 }
 
 
 MemTable::~MemTable() {
     assert(refs_ == 0);
     //////////meggie
-    DEBUG_T("in delete MemTable\n");
     if(arena_nvm_){
-        DEBUG_T("delete nvm MemTable\n");
         delete arena_nvm_;
     }
     //////////meggie
@@ -284,13 +280,11 @@ void MemTable::Add(const char* kvitem){
     }else{
         memcpy(buf, kvitem, kvlength);
     }
-    DEBUG_T("nvm immutable add, start\n"); 
 #ifdef ENABLE_RECOVERY
     table_.Insert(buf);
 #else
     table_.Insert(buf);
 #endif
-    DEBUG_T("nvm immutable add, end\n"); 
 }
 //////////////meggie
 
